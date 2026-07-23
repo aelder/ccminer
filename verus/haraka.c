@@ -25,8 +25,9 @@ Optimized Implementations for Haraka256 and Haraka512
 */
 
 #include <stdio.h>
-#include "haraka.h"
 #include <stdint.h>
+#include <string.h>
+#include "haraka.h"
 u128 rc[40];
 u128 rc0[40] = {0};
 
@@ -376,7 +377,7 @@ void haraka512_zero(unsigned char *out, const unsigned char *in) {
   TRUNCSTORE(out, s[0], s[1], s[2], s[3]);
 }
 
-void haraka512_keyed(unsigned char *out, const unsigned char *in, const u128 *rc) {
+uint32_t haraka512_keyed_highword(const unsigned char *in, const u128 *rc) {
   u128 s[4], tmp;
 
   s[0] = LOAD(in);
@@ -403,9 +404,42 @@ void haraka512_keyed(unsigned char *out, const unsigned char *in, const u128 *rc
  // s[1] = _mm_xor_si128(s[1], LOAD(in + 16));
  // s[2] = _mm_xor_si128(s[2], LOAD(in + 32));
  // s[3] = _mm_xor_si128(s[0], LOAD(in + 48));
-  ((uint32_t*)&out[0])[7] = ((uint32_t*)&s[0])[10] ^ ((uint32_t*)&in[52])[0];
+  uint32_t state_word;
+  uint32_t input_word;
+  memcpy(&state_word, (const unsigned char *)&s[2] + 8, sizeof(state_word));
+  memcpy(&input_word, in + 52, sizeof(input_word));
+  return state_word ^ input_word;
+}
 
-  //TRUNCSTORE(out, s[0],s[1], s[2], s[3]);
+void haraka512_keyed(unsigned char *out, const unsigned char *in, const u128 *rc) {
+  u128 s[4], tmp;
+
+  s[0] = LOAD(in);
+  s[1] = LOAD(in + 16);
+  s[2] = LOAD(in + 32);
+  s[3] = LOAD(in + 48);
+
+  AES4(s[0], s[1], s[2], s[3], 0);
+  MIX4(s[0], s[1], s[2], s[3]);
+
+  AES4(s[0], s[1], s[2], s[3], 8);
+  MIX4(s[0], s[1], s[2], s[3]);
+
+  AES4(s[0], s[1], s[2], s[3], 16);
+  MIX4(s[0], s[1], s[2], s[3]);
+
+  AES4(s[0], s[1], s[2], s[3], 24);
+  MIX4(s[0], s[1], s[2], s[3]);
+
+  AES4(s[0], s[1], s[2], s[3], 32);
+  MIX4(s[0], s[1], s[2], s[3]);
+
+  s[0] = _mm_xor_si128(s[0], LOAD(in));
+  s[1] = _mm_xor_si128(s[1], LOAD(in + 16));
+  s[2] = _mm_xor_si128(s[2], LOAD(in + 32));
+  s[3] = _mm_xor_si128(s[3], LOAD(in + 48));
+
+  TRUNCSTORE(out, s[0], s[1], s[2], s[3]);
 }
 
 void haraka512_4x(unsigned char *out, const unsigned char *in) {

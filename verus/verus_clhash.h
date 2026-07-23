@@ -132,6 +132,13 @@ uint64_t verusclhashv2_1(void * random, const unsigned char buf[64], uint64_t ke
 	u128 *g_prand, u128 *g_prandex);
 uint64_t verusclhashv2_2(void * random, const unsigned char buf[64], uint64_t keyMask, uint32_t *fixrand, uint32_t *fixrandex,
 	u128 *g_prand, u128 *g_prandex);
+#ifdef ARM
+void verusclhashv2_2_dual(
+	void *__restrict random0, const unsigned char *__restrict buf0,
+	uint32_t *__restrict touched0,
+	void *__restrict random1, const unsigned char *__restrict buf1,
+	uint32_t *__restrict touched1, uint64_t *__restrict out);
+#endif
 uint64_t verusclhash_port(void * random, const unsigned char buf[64], uint64_t keyMask, uint32_t *fixrand, uint32_t *fixrandex,
 	u128 *g_prand, u128 *g_prandex);
 

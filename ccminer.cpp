@@ -21,6 +21,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include <signal.h>
+#include <chrono>
 
 #include <curl/curl.h>
 #include <openssl/sha.h>
@@ -197,6 +198,15 @@ static int app_exit_code = EXIT_CODE_OK;
 
 pthread_mutex_t applog_lock;
 pthread_mutex_t stats_lock;
+static pthread_mutex_t benchmark_lock = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t benchmark_cond = PTHREAD_COND_INITIALIZER;
+static unsigned int benchmark_ready = 0;
+static bool benchmark_go = false;
+static bool benchmark_stopping = false;
+static bool benchmark_arrived[MAX_GPUS] = { false };
+static std::chrono::steady_clock::time_point benchmark_started_at;
+static std::chrono::steady_clock::time_point benchmark_ended_at[MAX_GPUS];
+static uint64_t benchmark_hashes[MAX_GPUS] = { 0 };
 double thr_hashrates[MAX_GPUS] = { 0 };
 uint64_t global_hashrate = 0;
 double   stratum_diff = 0.0;
@@ -2013,6 +2023,22 @@ static void *miner_thread(void *userdata)
 
 		pool_on_hold = false;
 
+		if (opt_benchmark && !benchmark_arrived[thr_id]) {
+			pthread_mutex_lock(&benchmark_lock);
+			if (!benchmark_arrived[thr_id]) {
+				benchmark_arrived[thr_id] = true;
+				++benchmark_ready;
+				if (benchmark_ready == (unsigned int)opt_n_threads) {
+					benchmark_started_at = std::chrono::steady_clock::now();
+					benchmark_go = true;
+					pthread_cond_broadcast(&benchmark_cond);
+				}
+			}
+			while (!benchmark_go)
+				pthread_cond_wait(&benchmark_cond, &benchmark_lock);
+			pthread_mutex_unlock(&benchmark_lock);
+		}
+
 		work_restart[thr_id].restart = 0;
 
 		/* adjust max_nonce to meet target scan time */
@@ -2021,8 +2047,34 @@ static void *miner_thread(void *userdata)
 		else
 			max64 = max(1, (int64_t) scan_time + g_work_time - time(NULL));
 
+		if (opt_benchmark && opt_time_limit > 0 && benchmark_go) {
+			const double elapsed =
+				std::chrono::duration<double>(
+					std::chrono::steady_clock::now() - benchmark_started_at).count();
+			const double remain = opt_time_limit - elapsed;
+			if (remain <= 0.0) {
+				bool stop_now = false;
+				pthread_mutex_lock(&benchmark_lock);
+				if (!benchmark_stopping) {
+					benchmark_stopping = true;
+					stop_now = true;
+				}
+				pthread_mutex_unlock(&benchmark_lock);
+
+				if (stop_now) {
+					app_exit_code = EXIT_CODE_TIME_LIMIT;
+					abort_flag = true;
+					restart_threads();
+					workio_abort();
+				}
+				break;
+			}
+			if ((uint64_t)ceil(remain) < max64)
+				max64 = (uint64_t)ceil(remain);
+		}
+
 		/* time limit */
-		if (opt_time_limit > 0 && firstwork_time) {
+		if (!opt_benchmark && opt_time_limit > 0 && firstwork_time) {
 			int passed = (int)(time(NULL) - firstwork_time);
 			int remain = (int)(opt_time_limit - passed);
 			if (remain < 0)  {
@@ -2047,21 +2099,7 @@ static void *miner_thread(void *userdata)
 					continue;
 				}
 				app_exit_code = EXIT_CODE_TIME_LIMIT;
-				if (opt_benchmark) {
-					double hashrate = 0.0;
-					pthread_mutex_lock(&stats_lock);
-					for (int i = 0; i < opt_n_threads; i++)
-						hashrate += stats_get_speed(i, thr_hashrates[i]);
-					pthread_mutex_unlock(&stats_lock);
-					global_hashrate = llround(hashrate);
-					char rate[32];
-					format_hashrate((double)global_hashrate, rate);
-					applog(LOG_NOTICE, "Benchmark: %s", rate);
-					usleep(200*1000);
-					fprintf(stderr, "%llu\n", (long long unsigned int) global_hashrate);
-				} else {
-					applog(LOG_NOTICE, "Mining timeout of %ds reached, exiting...", opt_time_limit);
-				}
+				applog(LOG_NOTICE, "Mining timeout of %ds reached, exiting...", opt_time_limit);
 				abort_flag = true;
 				workio_abort();
 				break;
@@ -2178,6 +2216,14 @@ static void *miner_thread(void *userdata)
 			max64 = max(minmax-1, max64);
 		}
 
+		if (opt_benchmark && opt_algo == ALGO_EQUIHASH &&
+			thr_hashrates[thr_id] > 0.0) {
+			const uint64_t benchmark_batch = max(
+				(uint64_t)0x10000,
+				(uint64_t)(thr_hashrates[thr_id] / 20.0));
+			max64 = min(max64, benchmark_batch);
+		}
+
 		// we can't scan more than uint32 capacity
 		max64 = min(UINT32_MAX, max64);
 
@@ -2239,6 +2285,10 @@ static void *miner_thread(void *userdata)
 			goto out;
 		}
 
+		if (opt_benchmark) {
+			benchmark_hashes[thr_id] += hashes_done;
+			benchmark_ended_at[thr_id] = std::chrono::steady_clock::now();
+		}
 		
 
 		if (abort_flag)
@@ -3769,6 +3819,28 @@ int main(int argc, char *argv[])
 			pthread_cond_signal(&cgpu->monitor.sampling_signal);
 		}
 		pthread_join(thr_info[i].pth, NULL);
+	}
+
+	if (opt_benchmark && benchmark_go) {
+		std::chrono::steady_clock::time_point benchmark_ended =
+			benchmark_started_at;
+		for (i = 0; i < opt_n_threads; ++i) {
+			if (benchmark_ended_at[i] > benchmark_ended)
+				benchmark_ended = benchmark_ended_at[i];
+		}
+		const double elapsed =
+			std::chrono::duration<double>(
+				benchmark_ended - benchmark_started_at).count();
+		uint64_t hashes = 0;
+		for (i = 0; i < opt_n_threads; ++i)
+			hashes += benchmark_hashes[i];
+		global_hashrate = elapsed > 0.0 ? llround(hashes / elapsed) : 0;
+
+		char rate[32];
+		format_hashrate((double)global_hashrate, rate);
+		applog(LOG_NOTICE, "Benchmark: %s (%llu hashes in %.3fs)",
+			rate, (long long unsigned int)hashes, elapsed);
+		fprintf(stderr, "%llu\n", (long long unsigned int)global_hashrate);
 	}
 
 	if (monitor_thr_id != -1) {

@@ -31,8 +31,20 @@ export CPPFLAGS="-I${brew_prefix}/include -I${curl_prefix}/include -I${openssl_p
 export LDFLAGS="-L${brew_prefix}/lib -L${curl_prefix}/lib -L${openssl_prefix}/lib ${LDFLAGS:-}"
 
 cpu_flags="-O3"
+if [[ "${LTO:-1}" == "1" ]]; then
+  cpu_flags="${cpu_flags} -flto=thin"
+fi
+if [[ "${FORCE_JUMP_TABLES:-1}" == "1" ]]; then
+  export CPPFLAGS="${CPPFLAGS} -mllvm -aarch64-min-jump-table-entries=1"
+  if [[ "${LTO:-1}" == "1" ]]; then
+    export LDFLAGS="${LDFLAGS} -Wl,-mllvm,-aarch64-min-jump-table-entries=1"
+  fi
+fi
 if [[ "${NATIVE:-0}" == "1" ]]; then
   cpu_flags="${cpu_flags} -mcpu=native"
+fi
+if [[ -n "${EXTRA_FLAGS:-}" ]]; then
+  cpu_flags="${cpu_flags} ${EXTRA_FLAGS}"
 fi
 
 if [[ -f Makefile ]]; then
