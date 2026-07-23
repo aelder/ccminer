@@ -59,6 +59,9 @@ With the exact toolchain above, that source produces candidate binary SHA-256
 Two order-reversed 8-second pairs averaged 24.155 MH/s versus 23.640 MH/s for
 the exact locked binary. A candidate-only 30-second run with the GUI minimized
 measured **24.10 MH/s** (722,953,387 hashes in 30.003 seconds).
+Two subsequent short LuckPool sessions submitted four live PBaaS shares with
+zero rejects, validating the candidate's subscribe, authorize, job, target,
+solution, and share-submission path on that pool.
 
 Locked mode remains a reproducibility check for the older reference source and
 must match its binary checksum. Candidate mode verifies the same profile and

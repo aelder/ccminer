@@ -35,7 +35,7 @@ measurements and rejected experiments live in
 | Cache/load scheduling | One case-4 load-staging candidate survived and reached 24.155 MH/s in short pairs and 24.10 MH/s over a quiet-desktop 30-second run |
 | P/E-core policy | Measured: all 10 cores contribute; a 4-normal/6-utility split did not beat the default scheduler |
 | GPU feasibility | Exact Metal hot-path prototype passed CPU/GPU differential checks, measured 2.150 MH/s alone and 1.648 MH/s beside the CPU miner, and remains isolated on `codex/metal-verus-prototype` |
-| Pool validation | Open: accepted-share testing is still required before binary distribution |
+| Pool validation | Complete on LuckPool: two short live sessions produced 4 accepted shares and 0 rejects |
 | Sustained efficiency | Open: no 10–20 minute thermal/power run has been authorized or performed |
 | Packaging/licensing | Open: signing, notarization, dependency pinning, and a complete license/NOTICE inventory remain |
 
@@ -176,10 +176,10 @@ The native build, deterministic hot-path tests, reliable offline benchmark,
 two-lane CPU kernel, compiler/LTO/PGO comparisons, and first P/E-core
 experiments are complete. The remaining gates are:
 
-1. Validate Stratum subscribe/authorize/job/submit behavior against a
-   controlled or low-difficulty pool and record accepted shares.
-2. Cross-check complete PBaaS job assembly and submitted nonces against the
+1. Cross-check complete PBaaS job assembly and submitted nonces against the
    daemon, not only the isolated hashing kernel.
+2. Repeat accepted-share validation on any additional pool intended for
+   production use and confirm worker accounting on the pool dashboard.
 3. Continue CPU optimization with the existing 8–10 second iteration loop,
    correctness oracle, order-reversed pairs, and 30–60 second confirmations.
 4. Train and compare fresh PGO profiles on each target M-series generation
@@ -192,7 +192,7 @@ experiments are complete. The remaining gates are:
 7. Restore a complete license/NOTICE inventory, pin dependencies, sign and
    notarize binaries, and publish per-build checksums and source.
 
-The immediate engineering milestone is now: **receive accepted shares with the
-current native ARM64 candidate while preserving byte-for-byte daemon-equivalent
-PBaaS hashing behavior**. That closes the remaining correctness boundary before
-binary distribution or sustained performance claims.
+The current native ARM64 candidate has now received four accepted PBaaS shares
+with zero rejects. The next correctness milestone is a byte-for-byte
+full-job/submit cross-check against the daemon, followed by broader pool and
+release validation before binary distribution or sustained performance claims.

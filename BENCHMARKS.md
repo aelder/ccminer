@@ -99,6 +99,28 @@ only the candidate was run under this minimized-window condition, treat the
 result as evidence of substantial GUI/display contention, not as a new
 baseline-versus-candidate comparison.
 
+## Live pool validation
+
+The exact candidate binary
+`c8d7e97fbd3485cc31e7d82281a3291ba1720c9b86359a6891da90e841f3c443`
+was tested with 10 threads against LuckPool's North America CPU endpoint,
+`na.luckpool.net:3956`, on 2026-07-23.
+
+The first short run enabled protocol dumping. It received successful responses
+to `mining.subscribe` and `mining.authorize`, accepted a pool target and live
+PBaaS job, submitted one complete solution, and received `result: true`. Its
+share difficulty was 4,071,930 against a pool-assigned difficulty of
+approximately 3,947,580.
+
+A second short run used ordinary quiet logging and submitted three additional
+shares at difficulties 5,440,625, 10,592,650, and 7,863,243. All three were
+accepted. The combined live result is therefore **4 accepted and 0 rejected**
+across two independent connections and worker names.
+
+The displayed 18.39–18.93 MH/s rates were startup estimates from sessions that
+stopped within seconds of finding shares; they are not performance benchmarks.
+No macOS thermal or performance warning was recorded.
+
 ## Core-type diagnostics
 
 The normal scheduler does use all ten cores. A short four-thread run measured

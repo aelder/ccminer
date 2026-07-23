@@ -15,7 +15,8 @@ The 24.10 MH/s run used the exact candidate binary with SHA-256
 `c8d7e97fbd3485cc31e7d82281a3291ba1720c9b86359a6891da90e841f3c443`,
 10 threads, the locked Apple M5 PGO profile, and a minimized Codex/ChatGPT
 window. macOS reported no thermal or performance warning. It was not a
-sustained thermal test, and pool-accepted shares still need validation.
+sustained thermal test. Live pool validation later submitted four shares across
+two short sessions; all four were accepted.
 
 | Milestone | 10-thread result | What changed |
 |---|---:|---|
@@ -371,6 +372,27 @@ do not run one without explicit approval.
 Use a wallet you control, not an exchange deposit address. Pool host, port,
 difficulty-password syntax, fees, and merge-mining support are pool-specific.
 
+### Validated live-pool result
+
+On 2026-07-23, the exact candidate binary connected to LuckPool's North
+America CPU endpoint at `na.luckpool.net:3956` with 10 threads. The first
+protocol-dump run successfully completed `mining.subscribe`,
+`mining.authorize`, received a live PBaaS job and target, found a share,
+submitted the full solution, and received `result: true`.
+
+A second ordinary short run submitted three more shares. The combined result
+was **4 accepted, 0 rejected**:
+
+| Run | Accepted | Rejected | Submitted difficulties |
+|---|---:|---:|---|
+| Protocol-dump validation | 1 | 0 | 4,071,930 |
+| Normal short pool run | 3 | 0 | 5,440,625; 10,592,650; 7,863,243 |
+
+The pool-assigned difficulty was approximately 3,947,580. Displayed hashrates
+of 18.39–18.93 MH/s were startup readings from sessions lasting only seconds;
+they are not comparable performance benchmarks. No macOS thermal or
+performance warning was recorded.
+
 ## Current status
 
 - Native ARM64 build: working.
@@ -384,8 +406,10 @@ difficulty-password syntax, fees, and merge-mining support are pool-specific.
 - Metal hot-path prototype: correct and measured, isolated on its own branch;
   not integrated with target scanning or share submission.
 - Sustained thermal/power validation: not run.
-- Accepted-share pool validation: still the next correctness gate before
-  distributing binaries.
+- Live Stratum/PBaaS validation: 4/4 shares accepted by LuckPool across two
+  short sessions.
+- Broader pool compatibility, packaging, signing, and release validation:
+  still open before distributing binaries.
 
 See [RESEARCH.md](RESEARCH.md) for the source audit, licensing notes, and the
 optimization roadmap.

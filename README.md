@@ -5,8 +5,9 @@
 This fork now has a native `arm64` VerusHash 2.2.2 path for Apple silicon.
 On an Apple M5 MacBook Air, the current CPU candidate measured **24.10 MH/s**
 over 30 seconds with 10 threads, up 59.3% from the initial 15.13 MH/s native
-baseline. This is an offline benchmark result, not a sustained thermal or
-accepted-share result.
+baseline. This is not a sustained thermal result. Live Stratum/PBaaS testing
+subsequently produced four accepted shares with zero rejects across two short
+LuckPool sessions.
 
 See [README-MAC-ARM.md](README-MAC-ARM.md) for the reproducible build,
 correctness tests, benchmark conditions, optimization history, P/E-core
