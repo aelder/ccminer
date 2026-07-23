@@ -287,6 +287,40 @@ than further CPU work. It also competes for memory bandwidth, power, and the
 same integrated GPU used by WindowServer. It remains isolated on its prototype
 branch until a queued/double-buffered backend can prove a whole-miner gain.
 
+### Ranked GPU bottlenecks
+
+This is the current evidence-based priority order. The first six entries have
+not yet been isolated as independent ablations, so the order is a working
+hypothesis rather than a measured attribution:
+
+1. **No native carry-less multiply exposed through Metal.** CLHash depends
+   heavily on 64-bit polynomial multiplication. The CPU uses hardware PMULL;
+   the Metal kernel synthesizes it from ordinary integer operations.
+2. **Random 8,832-byte mutable key per lane.** A batch of 8,192 lanes carries
+   roughly 69 MiB of independent key state with random, poorly coalesced
+   accesses.
+3. **Data-dependent SIMD divergence.** Lanes select among eight different
+   CLHash cases, forcing a SIMD group to execute multiple paths with inactive
+   lanes masked off.
+4. **No native AES-round operation exposed through Metal.** The GPU replaces
+   CPU hardware AES instructions with tables and ordinary operations in
+   Haraka and AES-containing CLHash cases.
+5. **Serial dependency chains within each hash.** Random selection, mutation,
+   and restoration constrain useful instruction-level parallelism inside a
+   lane.
+6. **Register and thread-state pressure.** Emulated primitives and live
+   intermediate state reduce residency and make memory latency harder to hide.
+7. **CPU/GPU bandwidth and power contention.** This applies to concurrent
+   mining; the measured GPU rate fell about 23% from 2.150 to 1.648 MH/s when
+   the CPU miner ran beside it.
+8. **Command-buffer and dispatch overhead.** The prototype submits work
+   serially, but its 8,192-lane batches already amortize enough overhead that
+   this is unlikely to explain the order-of-magnitude standalone gap.
+
+Unified memory removes an explicit PCIe transfer but does not remove any of
+the top six costs. The first optimization target is therefore the synthesized
+carry-less multiply.
+
 ## Experiments that did not survive
 
 These changes were implemented, correctness-tested where applicable,
