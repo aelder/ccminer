@@ -27,6 +27,28 @@ newer instructions selected by the compiler may not run on older M-series Macs.
 On the tested M5, native tuning did not beat the portable build, so the default
 is currently recommended.
 
+For a machine- and workload-trained build, run:
+
+```sh
+./build-mac-arm-pgo.sh
+```
+
+This performs a normal build, trains an instrumented binary with a short
+offline Verus workload, merges a miner-only profile, and leaves the
+profile-guided binary at `./ccminer`. The default training settings use the
+host logical CPU count and a nominal 5-second benchmark:
+
+```sh
+PGO_TRAIN_SECONDS=5 PGO_TRAIN_THREADS=10 ./build-mac-arm-pgo.sh
+```
+
+Instrumentation makes the training binary much slower than a normal miner, so
+it can finish its current work batch after the nominal time limit. PGO profiles
+are specific to the source, compiler, and architecture flags; rerun the script
+after any of those change. The offline training workload does not exercise pool
+networking or share submission, so PGO remains opt-in until accepted-share
+testing covers the resulting binary.
+
 For compiler troubleshooting, `LTO=0` disables ThinLTO and
 `FORCE_JUMP_TABLES=0` disables the LLVM jump-table override.
 
