@@ -2027,7 +2027,10 @@ static void *miner_thread(void *userdata)
 			int remain = (int)(opt_time_limit - passed);
 			if (remain < 0)  {
 				if (thr_id != 0) {
-					sleep(1); continue;
+					if (abort_flag)
+						break;
+					sleep(1);
+					continue;
 				}
 				if (num_pools > 1 && pools[cur_pooln].time_limit > 0) {
 					if (!pool_is_switching) {
@@ -2044,8 +2047,13 @@ static void *miner_thread(void *userdata)
 					continue;
 				}
 				app_exit_code = EXIT_CODE_TIME_LIMIT;
-				abort_flag = true;
 				if (opt_benchmark) {
+					double hashrate = 0.0;
+					pthread_mutex_lock(&stats_lock);
+					for (int i = 0; i < opt_n_threads; i++)
+						hashrate += stats_get_speed(i, thr_hashrates[i]);
+					pthread_mutex_unlock(&stats_lock);
+					global_hashrate = llround(hashrate);
 					char rate[32];
 					format_hashrate((double)global_hashrate, rate);
 					applog(LOG_NOTICE, "Benchmark: %s", rate);
@@ -2054,6 +2062,7 @@ static void *miner_thread(void *userdata)
 				} else {
 					applog(LOG_NOTICE, "Mining timeout of %ds reached, exiting...", opt_time_limit);
 				}
+				abort_flag = true;
 				workio_abort();
 				break;
 			}
@@ -2096,6 +2105,11 @@ static void *miner_thread(void *userdata)
 		 *    before hashrate is computed */
 		if (max64 < minmax) {
 			switch (opt_algo) {
+			case ALGO_EQUIHASH:
+				// Keep the initial Verus batch responsive on heterogeneous
+				// Apple performance/efficiency cores and stale pool jobs.
+				minmax = 0x10000;
+				break;
 			case ALGO_BLAKECOIN:
 			case ALGO_BLAKE2S:
 			case ALGO_VANILLA:
@@ -2211,7 +2225,12 @@ static void *miner_thread(void *userdata)
 
 		
 		case ALGO_EQUIHASH:
-			rc = scanhash_verus(thr_id, &work, max_nonce, &hashes_done);
+			// The Verus scanner owns a per-job 32-bit counter starting at
+			// zero. Pass a batch length, not this worker's absolute outer
+			// nonce endpoint; otherwise workers above thread 0 scan billions
+			// of candidates before returning their first hashrate sample.
+			rc = scanhash_verus(thr_id, &work,
+				(uint32_t)(max_nonce - start_nonce), &hashes_done);
 			break;
 		
 
