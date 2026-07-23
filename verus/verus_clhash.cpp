@@ -303,6 +303,11 @@ void clhash_step(clhash_lane &lane, int64_t i)
 			// a few AES operations
 			const __m128i *rc = prand;
 			__m128i tmp;
+#ifdef ARM
+			// Start the random load early so a miss can overlap the AES chain.
+			__m128i staged_prandex = _mm_load_si128(prandex);
+			__asm__ volatile("" : "+w"(staged_prandex));
+#endif
 
 			__m128i temp1 = pbuf[(selector & 1) ? -1 : 1];
 			__m128i temp2 = _mm_load_si128(pbuf);
@@ -321,7 +326,11 @@ void clhash_step(clhash_lane &lane, int64_t i)
 			const __m128i tempa1 = _mm_load_si128(prand);
 			const __m128i tempa2 = verus_mulhrs_epi16(acc, tempa1);
 
+#ifdef ARM
+			_mm_store_si128(prand, staged_prandex);
+#else
 			_mm_store_si128(prand, _mm_load_si128(prandex));
+#endif
 			_mm_store_si128(prandex, _mm_xor_si128(tempa1, tempa2));
 
 			break;

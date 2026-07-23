@@ -11,8 +11,10 @@ locked_profile_text="${project_dir}/profiles/apple-m5-verus-20260722.proftext"
 locked_profile_sha256="c7307423156d8aa33cc79920fff28f7a3086fbc2f30b481c2fffafecfb211597"
 locked_binary_sha256="4be0d7e1b388184d3d02df8eb57a019869a503a3c37440f428f3ef65a7e6d6f7"
 
-if [[ "$profile_mode" != "locked" && "$profile_mode" != "train" ]]; then
-  echo "PGO_PROFILE_MODE must be 'locked' or 'train'" >&2
+if [[ "$profile_mode" != "locked" &&
+      "$profile_mode" != "candidate" &&
+      "$profile_mode" != "train" ]]; then
+  echo "PGO_PROFILE_MODE must be 'locked', 'candidate', or 'train'" >&2
   exit 1
 fi
 if ! [[ "$train_seconds" =~ ^[1-9][0-9]*$ ]]; then
@@ -27,7 +29,7 @@ if pgrep -x ccminer >/dev/null; then
   echo "Stop the existing ccminer process before building the PGO miner" >&2
   exit 1
 fi
-if [[ "$profile_mode" == "locked" ]]; then
+if [[ "$profile_mode" == "locked" || "$profile_mode" == "candidate" ]]; then
   if [[ "${LTO:-1}" != "1" ||
         "${NATIVE:-0}" != "0" ||
         "${FORCE_JUMP_TABLES:-1}" != "1" ||
@@ -74,9 +76,10 @@ if [[ -n "${EXTRA_FLAGS:-}" ]]; then
 fi
 
 profile_data="${profile_root}/ccminer.profdata"
-if [[ "$profile_mode" == "locked" ]]; then
+if [[ "$profile_mode" == "locked" || "$profile_mode" == "candidate" ]]; then
   echo
-  echo "Reconstructing the locked 23.11 MH/s Apple M5 profile"
+  echo "Reconstructing the locked 23.11 MH/s Apple M5 profile" \
+    "for ${profile_mode} build"
   xcrun llvm-profdata merge --instr \
     -o "$profile_data" \
     "$locked_profile_text"

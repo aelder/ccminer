@@ -47,6 +47,27 @@ PGO_PROFILE_MODE=train \
   ./build-mac-arm-pgo.sh
 ```
 
+For a source candidate whose control-flow profile is still compatible with the
+locked profile, use:
+
+```sh
+PGO_PROFILE_MODE=candidate ./build-mac-arm-pgo.sh
+```
+
+Candidate mode uses the exact locked profile and toolchain checks but does not
+require the final binary to match the locked checksum. Apple clang ignores
+per-function profile data when a candidate changes that function's control
+flow; use `PGO_PROFILE_MODE=train` for those experiments.
+
+The current development candidate stages case 4's late `prandex` load across
+its AES chain without adding work. Build it with candidate mode. Two clean
+order-reversed 8-second pairs averaged 24.155 MH/s versus 23.640 MH/s for the
+exact locked binary, a provisional 2.18% gain. It has not yet had a longer
+sustained thermal test, so the default locked checksum still refers to the
+23.11 MH/s reference build. A conservative 30-second baseline-first comparison
+measured 22.69 MH/s for the locked binary and 22.72 MH/s for the candidate, a
+neutral-to-slightly-positive 0.13% difference.
+
 Instrumentation makes the training binary much slower than a normal miner, so
 it can finish its current work batch after the nominal time limit. PGO profiles
 are specific to the source, compiler, and architecture flags; rerun the script
@@ -64,12 +85,17 @@ For compiler troubleshooting, `LTO=0` disables ThinLTO and
 ./test-verus-kernel.sh
 SANITIZE=1 ./test-verus-kernel.sh
 TEST_ARCH=x86_64 ./test-verus-kernel.sh
+VERUS_BASELINE_REV=HEAD ./test-verus-kernel.sh --differential-dual
 ```
 
 The suite checks deterministic full-hash vectors, filtered-versus-full Haraka
 output, scalar-versus-dual CLHash results, complete dynamic-key restoration,
 and the exact Apple NEON implementation of x86 `PMULHRSW` semantics. The
 `x86_64` mode runs through Rosetta on Apple silicon when Rosetta is installed.
+The baseline differential additionally compares both intermediate results,
+both touched-index logs, every mutated key byte, final hashes, complete key
+restoration, repeated calls, and aliased key-index cases against a Git
+revision compiled into the same test process.
 
 ## Benchmark
 

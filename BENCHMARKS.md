@@ -2,8 +2,9 @@
 
 ## Apple M5 MacBook Air
 
-Measured 2026-07-22 on macOS 26.5 with Apple clang 21.0.0. These are short
-offline VerusHash 2.2.2 runs, not sustained thermal or accepted-share tests.
+Measured 2026-07-22 and 2026-07-23 on macOS 26.5 with Apple clang 21.0.0.
+These are short offline VerusHash 2.2.2 runs, not sustained thermal or
+accepted-share tests.
 
 | Build | Threads | Result |
 |---|---:|---:|
@@ -13,6 +14,7 @@ offline VerusHash 2.2.2 runs, not sustained thermal or accepted-share tests.
 | Host-native (`-O3 -mcpu=native`) | 10 | 14.74 MH/s |
 | Packed dual-lane CLHash (`-O3`, ThinLTO, jump tables) | 10 | **22.95 MH/s** |
 | Clean frontend PGO (`-O3`, ThinLTO, jump tables) | 10 | **22.64 MH/s mean** |
+| Case-4 staged `prandex` load (locked PGO profile) | 10 | **24.16 MH/s mean** |
 
 The packed dual-lane result processed 183,910,193 hashes in 8.012 seconds. It is
 51.7% faster than the previously recorded 15.13 MH/s portable result. This is
@@ -57,6 +59,50 @@ confirmation and sustained thermal test have not been run; either requires
 explicit approval. The exact profile and reference build checksums are locked
 under [`profiles/`](profiles/README.md).
 
+## Provisional case-4 load-staging result
+
+The strongest post-lock candidate moves case 4's `prandex` load ahead of its
+AES chain and keeps the loaded vector live until the existing store. Both
+original late-load instructions were sampled L1D-miss sites. The change adds no
+dynamic instruction or memory operation: the PGO dual kernel shrank from 1,214
+to 1,212 instructions, retained its 272-byte frame, and gives the two staged
+loads roughly 55 and 82 instructions of lead time.
+
+The complete baseline/candidate state oracle passed 4,096 calls, including 514
+aliased key-index pairs. A four-round, same-process fixed-work comparison was
+positive in every round and measured +1.58% in aggregate. Two clean,
+order-reversed 8-second miner pairs then measured 24.21 and 24.10 MH/s for the
+candidate versus 23.66 and 23.62 MH/s for the exact locked binary. The pair
+means are 24.155 versus 23.640 MH/s, a **2.18%** improvement. The candidate
+binary SHA-256 is
+`c8d7e97fbd3485cc31e7d82281a3291ba1720c9b86359a6891da90e841f3c443`.
+
+A conservative 30-second confirmation ran the exact locked baseline first and
+the candidate second, so any accumulated heat worked against the candidate.
+The baseline measured 22.69 MH/s (680,684,701 hashes in 30.003 seconds) and
+the candidate measured 22.72 MH/s (681,529,577 hashes in 30.002 seconds), only
+a **0.13%** advantage. No macOS thermal or performance warning was recorded.
+The candidate therefore remains neutral-to-slightly-positive over a longer
+window; the short-run 2.18% gain should not be treated as sustained.
+
+## Core-type diagnostics
+
+The normal scheduler does use all ten cores. A short four-thread run measured
+11.84 MH/s and a ten-thread run measured 22.37 MH/s, so the additional six
+workers contributed about 10.53 MH/s. Do not infer normal P/E placement from
+the CPU Bottlenecks Instruments mode: that recording forced all ten workers to
+time-slice on the four performance cores.
+
+A separate L1D Miss Sampling trace did record work on both core types. It
+captured 13.533 performance-core CPU-seconds and 23.929 efficiency-core
+CPU-seconds. After normalizing sampled events by CPU residency, efficiency
+cores produced about 1.50 times as many L1D load and store miss samples per
+CPU-second; their L1D TLB miss rate was only about 1.12 times higher. The hot
+miss sites were random CLHash key loads/stores and keyed Haraka loads. These
+are diagnostic ratios, not hashrate measurements; repeat the trace under an
+otherwise idle system before using small differences to make a release
+decision.
+
 ## Rejected short experiments
 
 All kernel experiments below used the same default `-O3 -flto=thin` ARMv8
@@ -74,6 +120,42 @@ crypto build with forced jump-table lowering and 10 threads:
 - Hoisting common key and buffer loads before dispatch fell to 21.00 MH/s.
 - Manually unrolling only the variable 1–8-round inner cases fell to
   20.01 MH/s.
+- Prefetching both random key locations for each lane's next CLHash step was
+  correct but lost 10.14% in a clean, same-process four-round comparison.
+- Prefetching only case 4's late `rc[10..11]` line after the accepted staged
+  `prandex` load also lost. It passed the state oracle but added two prefetches
+  plus a selector reload; a four-round same-process comparison was negative in
+  three rounds and measured 0.31% slower in aggregate.
+- Replacing repeated case-6 signed remainders with a precomputed reciprocal
+  only when the divisor was reused at least three times passed full
+  baseline/candidate state and hash checks. It expanded the hot dual kernel
+  from 1,214 to 1,610 instructions. Two order-reversed 8-second pairs averaged
+  22.665 MH/s for the candidate versus 22.915 MH/s for the locked binary, a
+  1.09% loss, so the hardware `sdiv`/`msub` path remains locked.
+- A true dual keyed-Haraka high-word primitive beat two scalar calls by about
+  6.5% after warm-up, but Haraka is only about 2.3% of worker time. Integrating
+  it into the scanner changed the PGO shape and lost at whole-miner scale:
+  two order-reversed 8-second pairs averaged 21.95 MH/s for the candidate
+  versus 22.38 MH/s for the exact locked binary, a 1.9% loss.
+- Staging both pristine-key restore loads before either store retained the
+  scanner's instruction count and produced the intended two-load/two-store
+  assembly. Its order-reversed 8-second pairs disagreed, and the pair means
+  were 22.605 MH/s versus 22.775 MH/s for case-4 staging alone, a 0.75% loss,
+  so the restore path remains unchanged.
+- Interleaving both lanes' restore work produced four independent pristine
+  loads before four disjoint stores while preserving the scanner's PGO
+  profile, instruction counts, frame, and spills. A focused restore benchmark
+  improved 3.58%, but whole-miner orders disagreed; the pair means were about
+  0.38% slower than case-4-only, so it was also removed.
+- Staging case 3's `prandex` load across its signed divide removed four static
+  instructions and targeted E-heavy sampled misses, but its two miner orders
+  disagreed. The pair means were 22.35 MH/s for case 3 plus case 4 versus
+  22.535 MH/s for case 4 alone, a 0.82% loss, so only case 4 is retained.
+- A specialized keyed-Haraka filter constructed the intermediate-derived
+  suffix in registers and materialized it only on the rare full-hash branch.
+  It passed 100,010 equivalence cases, removed 17 common-path store bytes, and
+  netted one fewer dynamic instruction per hash, but a four-round standalone
+  comparison was consistently negative and measured 0.89% slower.
 
 The upstream multi-thread nonce-span bug had to be fixed before these numbers
 were meaningful. Before the fix, only thread 0 completed a normal batch; later
