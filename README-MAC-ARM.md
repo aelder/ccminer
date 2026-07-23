@@ -33,13 +33,18 @@ For a machine- and workload-trained build, run:
 ./build-mac-arm-pgo.sh
 ```
 
-This performs a normal build, trains an instrumented binary with a short
-offline Verus workload, merges a miner-only profile, and leaves the
-profile-guided binary at `./ccminer`. The default training settings use the
-host logical CPU count and a nominal 5-second benchmark:
+By default this uses the locked Apple M5 profile that produced the best
+measured short run, **23.11 MH/s**, and verifies the resulting binary checksum.
+It leaves the profile-guided binary at `./ccminer`. The normal portable build
+remains available through `./build-mac-arm.sh`.
+
+To train a fresh profile after changing mining code or the compiler, run:
 
 ```sh
-PGO_TRAIN_SECONDS=5 PGO_TRAIN_THREADS=10 ./build-mac-arm-pgo.sh
+PGO_PROFILE_MODE=train \
+  PGO_TRAIN_SECONDS=5 \
+  PGO_TRAIN_THREADS=10 \
+  ./build-mac-arm-pgo.sh
 ```
 
 Instrumentation makes the training binary much slower than a normal miner, so
@@ -47,7 +52,8 @@ it can finish its current work batch after the nominal time limit. PGO profiles
 are specific to the source, compiler, and architecture flags; rerun the script
 after any of those change. The offline training workload does not exercise pool
 networking or share submission, so PGO remains opt-in until accepted-share
-testing covers the resulting binary.
+testing covers the resulting binary. See [profiles/README.md](profiles/README.md)
+for the locked profile's provenance, checksums, and exact toolchain.
 
 For compiler troubleshooting, `LTO=0` disables ThinLTO and
 `FORCE_JUMP_TABLES=0` disables the LLVM jump-table override.

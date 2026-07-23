@@ -1,0 +1,3965 @@
+cbin2hex
+# Func Hash:
+11040568401
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+pool_set_creds
+# Func Hash:
+1283518861156021169
+# Num Counters:
+4
+# Counter Values:
+1
+1
+0
+0
+
+restart_threads
+# Func Hash:
+2878128738330321
+# Num Counters:
+7
+# Counter Values:
+2
+0
+0
+0
+20
+20
+20
+
+algo_free_all
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+api.cpp:_ZL10getthreadsPc
+# Func Hash:
+1160280
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+ccminer.cpp:_ZL11work_decodePK6json_tP4work
+# Func Hash:
+12853356785295879844
+# Num Counters:
+52
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+_Z24precompReduction64_si12817__simd128_int64_t
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+639999
+
+verus_clhash.cpp:_ZL19_sse2neon_vmull_p6417__simd64_uint64_tS_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+31502573
+
+_Z11jobj_binaryPK6json_tPKcPvm
+# Func Hash:
+6713858279644400751
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+fulltest
+# Func Hash:
+7826136285776662772
+# Num Counters:
+12
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+json_rpc_call_pool
+# Func Hash:
+856
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+work_set_target
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+stats_getmeminfo
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL13list_add_tailP9list_headS0_
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+1
+
+ccminer.cpp:_ZL6swab32j
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+diff_to_target
+# Func Hash:
+3204005057636441986
+# Num Counters:
+7
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+
+api.cpp:_ZL9gpustatusi
+# Func Hash:
+10980275345
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+haraka512_keyed_highword
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+639999
+
+_Z20target_to_diff_verusj
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+verus_clhash.cpp:_ZL13_mm_xor_si12817__simd128_int64_tS_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+143280414
+
+stratum_socket_full
+# Func Hash:
+715420407311
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+format_hashrate_unit
+# Func Hash:
+16320026858481858860
+# Num Counters:
+5
+# Counter Values:
+1
+0
+1
+0
+0
+
+json_rpc_longpoll
+# Func Hash:
+222164760
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+util.cpp:_ZL16stratum_get_algoP11stratum_ctxP6json_tS2_
+# Func Hash:
+2882522728465496
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+ccminer.cpp:_ZL19show_usage_and_exiti
+# Func Hash:
+11331908963099880292
+# Num Counters:
+9
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+bn_hash_target_ratio
+# Func Hash:
+5694046723179048676
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+get_defconfig_path
+# Func Hash:
+15484615679679212415
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+tq_new
+# Func Hash:
+45786905982040
+# Num Counters:
+3
+# Counter Values:
+13
+0
+0
+
+_Z8cpu_tempi
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+verus_clhash.cpp:_ZL17_mm_cvtsi64_si128x
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+959999
+
+util.cpp:_ZL19stratum_get_versionP11stratum_ctxP6json_tS2_
+# Func Hash:
+10495599980781028532
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+sysinfos.cpp:_ZL13linux_cputempi
+# Func Hash:
+10447329474369501360
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+pool_switch_next
+# Func Hash:
+5372021910347907814
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+verus_clhash.cpp:_ZL20_mm_clmulepi64_si12817__simd128_int64_tS_i
+# Func Hash:
+128458718162486793
+# Num Counters:
+7
+# Counter Values:
+31502573
+0
+0
+639999
+30862574
+0
+0
+
+haraka256
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+2760
+
+proper_exit
+# Func Hash:
+6652539119468455530
+# Num Counters:
+8
+# Counter Values:
+1
+1
+0
+0
+0
+0
+0
+0
+
+options_count
+# Func Hash:
+656472
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+verusscan.cpp:_ZZ14scanhash_verusENK3$_0clEj
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+verus_clhash.cpp:_ZL18_mm_unpacklo_epi3217__simd128_int64_tS_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+14045186
+
+api.cpp:_ZL7gethelpPc
+# Func Hash:
+1245706044642392
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+stratum_free_job
+# Func Hash:
+2895093875979345
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+_Z9cpu_clocki
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+ccminer.cpp:_ZL15workio_get_workP10workio_cmdPv
+# Func Hash:
+3111306702880389778
+# Num Counters:
+8
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+
+ccminer.cpp:_ZL11drop_policyv
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL24stratum_parse_extranonceP11stratum_ctxP6json_ti
+# Func Hash:
+11339940651427960937
+# Num Counters:
+17
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL10__list_addP9list_headS0_S0_
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+1
+
+verus_clhash.cpp:_ZL16_mm_aesenc_si12817__simd128_int64_tS_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+56180744
+
+verus_clhash.cpp:_ZL17_mm_cvtsi128_si6417__simd128_int64_t
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+29412597
+
+pools.cpp:_ZL11algo_to_intPc
+# Func Hash:
+14869534220626186879
+# Num Counters:
+24
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+verusscan.cpp:_ZL10RestoreKeyPKjP17__simd128_int64_tPKS1_
+# Func Hash:
+18129
+# Num Counters:
+2
+# Counter Values:
+639999
+20479968
+
+verusscan.cpp:_ZL25InitializeHarakaConstantsv
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+1
+
+json_load_url
+# Func Hash:
+17669221856446771471
+# Num Counters:
+11
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+pool_dump_infos
+# Func Hash:
+706929247953
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+hashlog_get_history
+# Func Hash:
+37336152
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+util.cpp:_ZL20sockopt_keepalive_cbPvi12curlsocktype
+# Func Hash:
+10172589835314842603
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+api.cpp:_ZL13remote_seturlPc
+# Func Hash:
+2882540764205912
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+hashlog_remember_scan_range
+# Func Hash:
+16078618471761559606
+# Num Counters:
+12
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+haraka.c:_mm_unpackhi_epi64
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+460
+
+verus_clhash.cpp:_ZL13_mm_setr_epi8aaaaaaaaaaaaaaaa
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+639999
+
+util.cpp:_ZL21json_object_set_errorP6json_tiPKc
+# Func Hash:
+1568
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL11json_decrefP6json_t
+# Func Hash:
+702470550673
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL17stratum_benchdataP6json_tS0_i
+# Func Hash:
+2882535396807512
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+_Z10mcast_initv
+# Func Hash:
+2930354355283089
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+stats_purge_old
+# Func Hash:
+11980095731120273493
+# Num Counters:
+8
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+
+api.cpp:_ZL13check_connectP11sockaddr_inPPcS1_
+# Func Hash:
+2858505654889876932
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+pool_get_first_valid
+# Func Hash:
+7399664458775647093
+# Num Counters:
+4
+# Counter Values:
+1
+1
+1
+0
+
+ccminer.cpp:_ZL17calc_network_diffP4work
+# Func Hash:
+175973905
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+util.cpp:_ZL10list_emptyP9list_head
+# Func Hash:
+1567
+# Num Counters:
+1
+# Counter Values:
+4
+
+api.cpp:_ZL11remote_quitPc
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+hashlog_get_last_sent
+# Func Hash:
+234795106708296792
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+stats_get_history
+# Func Hash:
+4881759459290808845
+# Num Counters:
+8
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+
+api.cpp:_ZL10syshwinfosv
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+ccminer.cpp:_ZL21show_version_and_exitv
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+ccminer.cpp:_ZL17get_blocktemplatePvP4work
+# Func Hash:
+11960025656799452816
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+stratum_subscribe
+# Func Hash:
+17838281255696754329
+# Num Counters:
+35
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL22stratum_set_difficultyP11stratum_ctxP6json_t
+# Func Hash:
+11228775512
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+aligned_free
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+ccminer.cpp:_ZL13affine_to_cpui
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+10
+
+hashlog.cpp:_ZL9hextouintPc
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL17stratum_reconnectP11stratum_ctxP6json_t
+# Func Hash:
+13434431158276479284
+# Num Counters:
+7
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+
+verus_clhash.cpp:_ZL18verus_mulhrs_epi1617__simd128_int64_tS_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+34824557
+
+ccminer.cpp:_ZL23stratum_handle_responsePc
+# Func Hash:
+16122876300101037493
+# Num Counters:
+16
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+api.cpp:_ZL7os_namev
+# Func Hash:
+7530449976001983830
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+ccminer.cpp:_ZL16stratum_gen_workP11stratum_ctxP4work
+# Func Hash:
+5463990467531974525
+# Num Counters:
+80
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+hashlog_getmeminfo
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+equi_stratum_set_target
+# Func Hash:
+8365114558846808204
+# Num Counters:
+8
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL11all_data_cbPKvmmPv
+# Func Hash:
+11178443864
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+util.cpp:_ZL12databuf_freeP11data_buffer
+# Func Hash:
+174663185
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+verus_clhash.cpp:_ZL11clhash_stepR11clhash_lanex
+# Func Hash:
+726667470680075897
+# Num Counters:
+27
+# Counter Values:
+20479968
+20479968
+2424527
+1189893
+2409756
+1180020
+2545901
+1314045
+2542066
+1310486
+1212226
+2803149
+1506331
+2481020
+1250670
+8541585
+5386866
+2388999
+2514111
+2538709
+1242155
+8767903
+5750564
+2569549
+2445110
+2734840
+1247749
+
+verusclhashv2_2
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+1
+
+equi_stratum_show_message
+# Func Hash:
+13969882578575708608
+# Num Counters:
+12
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL11json_increfP6json_t
+# Func Hash:
+10980762712
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+ccminer.cpp:_ZL15workio_cmd_freeP10workio_cmd
+# Func Hash:
+187543166967177814
+# Num Counters:
+5
+# Counter Values:
+1
+0
+1
+0
+1
+
+ccminer.cpp:_ZL17get_upstream_workPvP4work
+# Func Hash:
+3075316555414888557
+# Num Counters:
+10
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+_ZN7uint256C2Ev
+# Func Hash:
+18129
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+_Z47__verusclmulwithoutreduction64alignedrepeatv2_2P17__simd128_int64_tPKS_yPjS3_S0_S0_
+# Func Hash:
+1160280
+# Num Counters:
+2
+# Counter Values:
+1
+32
+
+pool_init_defaults
+# Func Hash:
+2029330375145875633
+# Num Counters:
+8
+# Counter Values:
+1
+1
+1
+1
+1
+1
+1
+1
+
+applog
+# Func Hash:
+17191398331871788288
+# Num Counters:
+16
+# Counter Values:
+2
+0
+0
+0
+0
+0
+2
+0
+0
+1
+1
+0
+0
+0
+2
+0
+
+stats_remember_speed
+# Func Hash:
+16155253106051719987
+# Num Counters:
+13
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL21stratum_buffer_appendP11stratum_ctxPKc
+# Func Hash:
+2745489
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+applog_hex
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+ccminer.cpp:_ZL15gbt_work_decodePK6json_tP4work
+# Func Hash:
+12211190614004927620
+# Num Counters:
+15
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+pool_switch_url
+# Func Hash:
+11262329944
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+verus_clhash.cpp:_ZL14_mm_load_si128PK17__simd128_int64_t
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+82486421
+
+verus_clhash.cpp:_ZL15_mm_store_si128P17__simd128_int64_tS_
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+38225096
+
+ccminer.cpp:_ZL14signal_handleri
+# Func Hash:
+489997558294
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+ccminer.cpp:_ZL13workio_threadPv
+# Func Hash:
+12716589414611894348
+# Num Counters:
+18
+# Counter Values:
+1
+0
+1
+1
+1
+0
+1
+0
+0
+1
+0
+0
+0
+0
+1
+0
+0
+0
+
+api.cpp:_ZL12setup_groupsv
+# Func Hash:
+18228627594557232062
+# Num Counters:
+32
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+api.cpp:_ZL5mcastv
+# Func Hash:
+2078736859035753905
+# Num Counters:
+27
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+pool_switch
+# Func Hash:
+8460616451484604855
+# Num Counters:
+21
+# Counter Values:
+1
+0
+1
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+1
+
+ccminer.cpp:_ZL15longpoll_threadPv
+# Func Hash:
+7279002893880745246
+# Num Counters:
+38
+# Counter Values:
+1
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+stats_purge_all
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+verusscan.cpp:_ZL14_mm_load_si128PK17__simd128_int64_t
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+10
+
+parse_arg
+# Func Hash:
+17264153501009990197
+# Num Counters:
+200
+# Counter Values:
+7
+7
+1
+0
+1
+0
+0
+1
+1
+0
+0
+1
+0
+0
+0
+0
+1
+0
+0
+0
+1
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+2
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+0
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+0
+0
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+ccminer.cpp:_ZL11algo_to_intPc
+# Func Hash:
+14869534220626186879
+# Num Counters:
+24
+# Counter Values:
+1
+13
+1
+13
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+verus_clhash.cpp:_ZL9init_laneR11clhash_laneP17__simd128_int64_tPKS1_yPjS5_S2_S2_
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+639999
+
+hashlog_get_sharediff
+# Func Hash:
+4518109855584713180
+# Num Counters:
+7
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL17stratum_get_statsP11stratum_ctxP6json_tS2_
+# Func Hash:
+5882179397693491019
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+haraka.c:_mm_storeu_si128
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+6440
+
+stratum_recv_line
+# Func Hash:
+10452375981944875652
+# Num Counters:
+22
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+target_to_diff
+# Func Hash:
+715420415505
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+aligned_calloc
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+haraka.c:_mm_unpacklo_epi32
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+8982986
+
+ccminer.cpp:_ZL11submit_workP8thr_infoPK4work
+# Func Hash:
+1156576659796253208
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+util.cpp:_ZL11resp_hdr_cbPvmmS_
+# Func Hash:
+13436680623775909709
+# Num Counters:
+20
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL14stratum_notifyP11stratum_ctxP6json_t
+# Func Hash:
+1139791532708209996
+# Num Counters:
+56
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+haraka.c:_mm_xor_si128
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+7360
+
+api.cpp:_ZL10gethwinfosPc
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+ccminer.cpp:_ZL11json_decrefP6json_t
+# Func Hash:
+702470550673
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+hashlog_get_scan_range
+# Func Hash:
+4892066215708451672
+# Num Counters:
+9
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+parse_pool_array
+# Func Hash:
+12831903364446000826
+# Num Counters:
+34
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+verus_clhash.cpp:_ZL18_mm_unpackhi_epi3217__simd128_int64_tS_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+14045186
+
+bn_store_hash_target_ratio
+# Func Hash:
+731688700354297732
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+util.cpp:_ZL22get_stratum_session_idP6json_t
+# Func Hash:
+7237441236786910156
+# Num Counters:
+12
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+VerusHashHalf
+# Func Hash:
+19458857448529
+# Num Counters:
+3
+# Counter Values:
+10
+470
+460
+
+hex2bin
+# Func Hash:
+12082076421768546764
+# Num Counters:
+9
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+tq_freeze
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+11
+
+api.cpp:_ZL11send_resultlPc
+# Func Hash:
+11178423384
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+util.cpp:_ZL13tq_freezethawP8thread_qb
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+11
+
+ccminer.cpp:_ZL20submit_upstream_workPvP4work
+# Func Hash:
+14354513666325818588
+# Num Counters:
+90
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL18opensocket_grab_cbPv12curlsocktypeP13curl_sockaddr
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+haraka.c:_mm_load_si128
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+2574716
+
+hashlog_remember_submit
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+ccminer.cpp:_ZL20get_cryptonight_algoi
+# Func Hash:
+128449919921460632
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+hashlog_already_submittted
+# Func Hash:
+2952346733188184
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+get_currentalgo
+# Func Hash:
+2749585
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+haraka.c:_mm_aesenc_si128
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+21833566
+
+ccminer.cpp:_ZL16parse_single_optiiPPc
+# Func Hash:
+13735849123837340034
+# Num Counters:
+4
+# Counter Values:
+1
+7
+1
+1
+
+ccminer.cpp:_ZL14get_mininginfoPvP4work
+# Func Hash:
+10146584703214349635
+# Num Counters:
+30
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+verusscan.cpp:_ZL16PrepareHashInputPh17__simd128_int64_thj
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+639999
+
+equi-stratum.cpp:_ZL6swab32j
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+_Z12parse_configP6json_t
+# Func Hash:
+17939806709567741606
+# Num Counters:
+28
+# Counter Values:
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+haraka.c:_mm_unpacklo_epi64
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+460
+
+verus_clhash.cpp:_ZL17_mm_cvtsi32_si128i
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+8292630
+
+scanhash_verus
+# Func Hash:
+9418430490832063859
+# Num Counters:
+28
+# Counter Values:
+10
+0
+20
+0
+0
+0
+10
+20
+10
+319999
+639998
+639998
+0
+0
+0
+639998
+0
+9
+1249
+1240
+1240
+1
+0
+0
+0
+0
+0
+10
+
+equi_stratum_notify
+# Func Hash:
+14948033223061123779
+# Num Counters:
+37
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+stratum_authorize
+# Func Hash:
+8221727465590901487
+# Num Counters:
+34
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+api.cpp:_ZL10getsummaryPc
+# Func Hash:
+304157611800
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+Verus2hash
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+1
+
+api.cpp:_ZL10gethistoryPc
+# Func Hash:
+219264088
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+_Z12share_resultiidPKc
+# Func Hash:
+8545720871509734459
+# Num Counters:
+18
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+api.cpp:_ZL10getscanlogPc
+# Func Hash:
+74241112
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+hashlog_purge_all
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+stratum_send_line
+# Func Hash:
+2696280
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+util.cpp:_ZL12seek_data_cbPvli
+# Func Hash:
+128449919921460760
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+ccminer.cpp:_ZL10is_windowsv
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+280
+
+util.cpp:_ZL15json_object_setP6json_tPKcS0_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL8list_delP9list_head
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+1
+
+hashlog_dump_job
+# Func Hash:
+5340473436491218720
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+equi-stratum.cpp:_ZL11json_decrefP6json_t
+# Func Hash:
+702470550673
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+ccminer.cpp:_ZL10wanna_minei
+# Func Hash:
+16653431297205778222
+# Num Counters:
+50
+# Counter Values:
+11
+0
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+api.cpp:_ZL13base64_encodePKhmPcm
+# Func Hash:
+1188263815399722982
+# Num Counters:
+11
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL12stratum_pongP11stratum_ctxP6json_t
+# Func Hash:
+2882522728465496
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+_Z18precompReduction6417__simd128_int64_t
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+639999
+
+api_thread
+# Func Hash:
+2696280
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+ccminer.cpp:_ZL12miner_threadPv
+# Func Hash:
+16566133102155369458
+# Num Counters:
+252
+# Counter Values:
+10
+0
+0
+0
+0
+0
+0
+0
+0
+0
+10
+11
+0
+0
+0
+0
+11
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+2
+9
+9
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+10
+11
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+10
+11
+10
+10
+1
+9
+0
+0
+11
+11
+11
+11
+11
+1
+1
+1
+10
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+10
+10
+10
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+10
+0
+10
+0
+10
+10
+0
+0
+0
+1
+0
+0
+0
+10
+0
+10
+10
+0
+10
+9
+0
+0
+0
+0
+0
+0
+0
+1
+1
+1
+1
+0
+0
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+10
+0
+
+load_constants
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+1
+
+ccminer.cpp:_ZL18workio_submit_workP10workio_cmdPv
+# Func Hash:
+17064819216634741413
+# Num Counters:
+7
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+
+GenNewCLKey
+# Func Hash:
+4752450705
+# Num Counters:
+3
+# Counter Values:
+10
+2760
+0
+
+equi_stratum_submit
+# Func Hash:
+11678089259135483728
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+ccminer.cpp:_ZL14stratum_threadPv
+# Func Hash:
+15534409898408492250
+# Num Counters:
+56
+# Counter Values:
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+haraka512
+# Func Hash:
+209
+# Num Counters:
+2
+# Counter Values:
+460
+0
+
+api.cpp:_ZL12mcast_threadPv
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL10__list_delP9list_headS0_
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+1
+
+stratum_connect
+# Func Hash:
+4468438579674044303
+# Num Counters:
+13
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+bin2hex
+# Func Hash:
+11178443864
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+tq_pop
+# Func Hash:
+5945982254507511038
+# Num Counters:
+7
+# Counter Values:
+3
+0
+0
+0
+0
+1
+1
+
+timeval_subtract
+# Func Hash:
+187824153746282011
+# Num Counters:
+3
+# Counter Values:
+1
+1
+0
+
+gpulog
+# Func Hash:
+11824700234863871116
+# Num Counters:
+7
+# Counter Values:
+10
+10
+10
+10
+0
+0
+0
+
+api.cpp:_ZL10getmeminfoPc
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+verus_network_diff
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL13getblocheightP11stratum_ctx
+# Func Hash:
+17848535930278260198
+# Num Counters:
+13
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+ccminer.cpp:_ZL13parse_cmdlineiPPc
+# Func Hash:
+5010461121070897208
+# Num Counters:
+10
+# Counter Values:
+1
+7
+1
+0
+0
+0
+0
+0
+0
+1
+
+atime2str
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+pool_set_attr
+# Func Hash:
+752064201970673678
+# Num Counters:
+10
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+_Z8get_workP8thr_infoP4work
+# Func Hash:
+907916407650425261
+# Num Counters:
+7
+# Counter Values:
+2
+2
+0
+0
+0
+0
+0
+
+time2str
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL9send_lineiPc
+# Func Hash:
+8374124290840396397
+# Num Counters:
+7
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+
+verus_clhash.cpp:_ZL16_mm_shuffle_epi817__simd128_int64_tS_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+639999
+
+hashlog_purge_old
+# Func Hash:
+14550619533892554336
+# Num Counters:
+6
+# Counter Values:
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL22stratum_unknown_methodP11stratum_ctxP6json_t
+# Func Hash:
+2882522728465496
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+equi-stratum.cpp:_ZL11json_increfP6json_t
+# Func Hash:
+10980762712
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+ccminer.cpp:_ZL12workio_abortv
+# Func Hash:
+2930361984722065
+# Num Counters:
+3
+# Counter Values:
+1
+0
+0
+
+api.cpp:_ZL10getpoolnfoPc
+# Func Hash:
+509394863808278777
+# Num Counters:
+9
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL6swab32j
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+20
+
+stats_get_speed
+# Func Hash:
+408448386102467433
+# Num Counters:
+11
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+util.cpp:_ZL13json_rpc_callPvPKcS1_S1_bbbPi
+# Func Hash:
+7152512397665343471
+# Num Counters:
+66
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+_ZNK9base_uintILj256EE9getdoubleEv
+# Func Hash:
+1160280
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+util.cpp:_ZL10is_windowsv
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+haraka.c:_mm_unpackhi_epi32
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+8342987
+
+api.cpp:_ZL14setup_ipaccessv
+# Func Hash:
+15589533847891303731
+# Num Counters:
+35
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+haraka512_keyed
+# Func Hash:
+209
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+stratum_handle_method
+# Func Hash:
+4889873738788186941
+# Num Counters:
+19
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+haraka.c:_mm_set_epi32
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+40
+
+util.cpp:_ZL14upload_data_cbPvmmS_
+# Func Hash:
+45924225721432
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+verusscan.cpp:_ZL15_mm_store_si128P17__simd128_int64_tS_
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+1279998
+
+verusscan.cpp:_ZL12FinalizeHashPhS_PKjjP17__simd128_int64_ty
+# Func Hash:
+715555939416
+# Num Counters:
+2
+# Counter Values:
+639999
+0
+
+sysinfos.cpp:_ZL13linux_cpufreqi
+# Func Hash:
+187543167022212184
+# Num Counters:
+3
+# Counter Values:
+0
+0
+0
+
+tq_push
+# Func Hash:
+13945996552076424910
+# Num Counters:
+4
+# Counter Values:
+1
+0
+0
+1
+
+api.cpp:_ZL19websocket_handshakelPcS_
+# Func Hash:
+16282983205794867145
+# Num Counters:
+5
+# Counter Values:
+0
+0
+0
+0
+0
+
+equi_work_set_target
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+0
+
+util.cpp:_ZL20stratum_show_messageP11stratum_ctxP6json_tS2_
+# Func Hash:
+2407508825686852386
+# Num Counters:
+7
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+
+format_hashrate
+# Func Hash:
+175973585
+# Num Counters:
+2
+# Counter Values:
+1
+1
+
+verusclhashv2_2_dual
+# Func Hash:
+18129
+# Num Counters:
+2
+# Counter Values:
+319999
+10239968
+
+util.cpp:_ZL11socket_fullii
+# Func Hash:
+11211998296
+# Num Counters:
+2
+# Counter Values:
+0
+0
+
+api.cpp:_ZL3apiv
+# Func Hash:
+14343008306401248400
+# Num Counters:
+71
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+
+stratum_disconnect
+# Func Hash:
+2894621416137873
+# Num Counters:
+4
+# Counter Values:
+0
+0
+0
+0
+
+equi-stratum.cpp:_ZL15json_object_setP6json_tPKcS0_
+# Func Hash:
+24
+# Num Counters:
+1
+# Counter Values:
+0
+
+main
+# Func Hash:
+6626065895096353331
+# Num Counters:
+62
+# Counter Values:
+1
+0
+140
+0
+0
+0
+0
+0
+0
+0
+1
+0
+0
+0
+1
+1
+1
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+10
+0
+0
+1
+10
+0
+0
+0
+1
+1
+1
+10
+2
+10
+1
+0
+0
+
+api.cpp:_ZL17remote_switchpoolPc
+# Func Hash:
+8580539645609442585
+# Num Counters:
+7
+# Counter Values:
+0
+0
+0
+0
+0
+0
+0
+
+_Z5Clearv
+# Func Hash:
+0
+# Num Counters:
+1
+# Counter Values:
+1

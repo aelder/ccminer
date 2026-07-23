@@ -54,7 +54,8 @@ Two interleaved exact-default runs measured 21.43 and 21.80 MH/s, averaging
 **21.62 MH/s**. The short-run mean improvement was 4.8%. Kernel vectors passed,
 and no macOS thermal or performance warning was recorded. A 30–60 second
 confirmation and sustained thermal test have not been run; either requires
-explicit approval.
+explicit approval. The exact profile and reference build checksums are locked
+under [`profiles/`](profiles/README.md).
 
 ## Rejected short experiments
 
