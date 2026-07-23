@@ -33,8 +33,6 @@ sessions subsequently produced four accepted shares and zero rejects.
 - Kept the normal macOS scheduler and all 10 cores active. The six additional
   workers beyond the four performance cores contributed substantial
   throughput.
-- Controlled GUI/display contention for the confirmation run; minimizing the
-  Chromium-based UI raised the same candidate from 22.72 to 24.10 MH/s.
 
 ## What we tried that did not help
 
