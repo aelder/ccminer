@@ -4,17 +4,15 @@ set -euo pipefail
 project_dir="$(cd "$(dirname "$0")" && pwd)"
 cd "$project_dir"
 
-profile_mode="${PGO_PROFILE_MODE:-locked}"
+profile_mode="${PGO_PROFILE_MODE:-candidate}"
 train_seconds="${PGO_TRAIN_SECONDS:-5}"
 train_threads="${PGO_TRAIN_THREADS:-$(sysctl -n hw.logicalcpu)}"
-locked_profile_text="${project_dir}/profiles/apple-m5-verus-20260722.proftext"
-locked_profile_sha256="c7307423156d8aa33cc79920fff28f7a3086fbc2f30b481c2fffafecfb211597"
-locked_binary_sha256="4be0d7e1b388184d3d02df8eb57a019869a503a3c37440f428f3ef65a7e6d6f7"
+reference_profile_text="${project_dir}/profiles/apple-m5-verus-20260722.proftext"
+reference_profile_sha256="c7307423156d8aa33cc79920fff28f7a3086fbc2f30b481c2fffafecfb211597"
 
-if [[ "$profile_mode" != "locked" &&
-      "$profile_mode" != "candidate" &&
+if [[ "$profile_mode" != "candidate" &&
       "$profile_mode" != "train" ]]; then
-  echo "PGO_PROFILE_MODE must be 'locked', 'candidate', or 'train'" >&2
+  echo "PGO_PROFILE_MODE must be 'candidate' or 'train'" >&2
   exit 1
 fi
 if ! [[ "$train_seconds" =~ ^[1-9][0-9]*$ ]]; then
@@ -29,22 +27,24 @@ if pgrep -x ccminer >/dev/null; then
   echo "Stop the existing ccminer process before building the PGO miner" >&2
   exit 1
 fi
-if [[ "$profile_mode" == "locked" || "$profile_mode" == "candidate" ]]; then
+if [[ "$profile_mode" == "candidate" ]]; then
   if [[ "${LTO:-1}" != "1" ||
         "${NATIVE:-0}" != "0" ||
         "${FORCE_JUMP_TABLES:-1}" != "1" ||
         -n "${EXTRA_FLAGS:-}" ]]; then
-    echo "Locked PGO requires LTO=1, NATIVE=0, FORCE_JUMP_TABLES=1," \
+    echo "The checked-in candidate profile requires LTO=1, NATIVE=0," \
+      "FORCE_JUMP_TABLES=1," \
       "and no EXTRA_FLAGS" >&2
     exit 1
   fi
   compiler_version="$(clang --version | head -n 1)"
   if [[ "$compiler_version" != "Apple clang version 21.0.0 (clang-2100.1.1.101)" ]]; then
-    echo "Locked PGO requires Apple clang 21.0.0 (clang-2100.1.1.101)" >&2
+    echo "The checked-in candidate profile requires Apple clang 21.0.0" \
+      "(clang-2100.1.1.101)" >&2
     exit 1
   fi
-  if [[ ! -f "$locked_profile_text" ]]; then
-    echo "Missing locked profile: ${locked_profile_text}" >&2
+  if [[ ! -f "$reference_profile_text" ]]; then
+    echo "Missing candidate profile: ${reference_profile_text}" >&2
     exit 1
   fi
 fi
@@ -76,16 +76,15 @@ if [[ -n "${EXTRA_FLAGS:-}" ]]; then
 fi
 
 profile_data="${profile_root}/ccminer.profdata"
-if [[ "$profile_mode" == "locked" || "$profile_mode" == "candidate" ]]; then
+if [[ "$profile_mode" == "candidate" ]]; then
   echo
-  echo "Reconstructing the locked 23.11 MH/s Apple M5 profile" \
-    "for ${profile_mode} build"
+  echo "Reconstructing the Apple M5 profile for the candidate build"
   xcrun llvm-profdata merge --instr \
     -o "$profile_data" \
-    "$locked_profile_text"
+    "$reference_profile_text"
   actual_profile_sha256="$(shasum -a 256 "$profile_data" | awk '{print $1}')"
-  if [[ "$actual_profile_sha256" != "$locked_profile_sha256" ]]; then
-    echo "Locked profile checksum mismatch" >&2
+  if [[ "$actual_profile_sha256" != "$reference_profile_sha256" ]]; then
+    echo "Candidate profile checksum mismatch" >&2
     exit 1
   fi
 else
@@ -127,14 +126,4 @@ make -j "$(sysctl -n hw.logicalcpu)" \
 
 echo
 file ./ccminer
-if [[ "$profile_mode" == "locked" ]]; then
-  actual_binary_sha256="$(shasum -a 256 ./ccminer | awk '{print $1}')"
-  if [[ "$actual_binary_sha256" != "$locked_binary_sha256" ]]; then
-    echo "Locked PGO binary checksum mismatch:" >&2
-    echo "  expected ${locked_binary_sha256}" >&2
-    echo "  actual   ${actual_binary_sha256}" >&2
-    exit 1
-  fi
-  echo "Verified locked binary SHA-256 ${actual_binary_sha256}"
-fi
 echo "Built PGO-optimized ${project_dir}/ccminer"

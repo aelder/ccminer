@@ -51,7 +51,6 @@ typedef unsigned char u_char;
 
 #endif
 #include "haraka.h"
-#include "haraka_portable.h"
 enum {
     // Verus Key size must include the equivalent size of a Haraka key
     // after the first part.

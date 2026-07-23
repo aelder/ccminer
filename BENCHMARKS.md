@@ -121,6 +121,18 @@ The displayed 18.39–18.93 MH/s rates were startup estimates from sessions that
 stopped within seconds of finding shares; they are not performance benchmarks.
 No macOS thermal or performance warning was recorded.
 
+## Apple-only primary-branch pruning
+
+On 2026-07-23 the optimized branch became the fork's GitHub default and the
+build graph was narrowed to the Apple-silicon Verus CPU miner. A clean native
+build, deterministic kernel vectors, and the sanitizer-enabled vectors all
+passed after the removal. An 8-second PGO smoke benchmark completed at
+20.41 MH/s while WindowServer, ChatGPT/Codex, Stats, contacts, and sharing
+services were collectively consuming substantial CPU. Treat that number only
+as startup/performance-path validation, not as a comparison with the
+24.10 MH/s quiet-desktop result. macOS reported no thermal or performance
+warning; no sustained thermal run was performed.
+
 ## Core-type diagnostics
 
 The normal scheduler does use all ten cores. A short four-thread run measured

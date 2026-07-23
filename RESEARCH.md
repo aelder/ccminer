@@ -36,6 +36,7 @@ measurements and rejected experiments live in
 | P/E-core policy | Measured: all 10 cores contribute; a 4-normal/6-utility split did not beat the default scheduler |
 | GPU feasibility | Exact Metal hot-path prototype passed CPU/GPU differential checks, measured 2.150 MH/s alone and 1.648 MH/s beside the CPU miner, and remains isolated on `codex/metal-verus-prototype` |
 | Pool validation | Complete on LuckPool: two short live sessions produced 4 accepted shares and 0 rejects |
+| Primary-branch scope | Complete for the safe first pass: Apple ARM64/Verus-only build graph; legacy platform, CUDA, prebuilt dependency, generic Equihash, and unused portable bundles removed |
 | Sustained efficiency | Open: no 10–20 minute thermal/power run has been authorized or performed |
 | Packaging/licensing | Open: signing, notarization, dependency pinning, and a complete license/NOTICE inventory remain |
 

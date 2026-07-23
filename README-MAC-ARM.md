@@ -42,11 +42,11 @@ brew install autoconf automake curl jansson openssl@3
 git submodule update --init --recursive
 ```
 
-On the current `codex/cpu-next-wins` source, build the fastest tested CPU
-candidate with:
+On the primary branch of this fork, build the fastest tested CPU candidate
+with:
 
 ```sh
-PGO_PROFILE_MODE=candidate ./build-mac-arm-pgo.sh
+./build-mac-arm-pgo.sh
 ```
 
 This produces `./ccminer` with `-O3 -flto=thin`, the portable ARMv8 crypto
@@ -62,11 +62,17 @@ git rev-parse --short HEAD
 shasum -a 256 ./ccminer
 ```
 
-For the case-4 source introduced by commit `6c7ce96` (including docs-only
-descendants) with Apple clang 21.0.0, the expected binary SHA-256 is:
+The pre-pruning case-4 candidate built with Apple clang 21.0.0 had SHA-256:
 
 ```text
 c8d7e97fbd3485cc31e7d82281a3291ba1720c9b86359a6891da90e841f3c443
+```
+
+The Apple-only pruned primary branch produces the same hot kernel through a
+smaller build graph. Its first verified PGO binary has SHA-256:
+
+```text
+56ee693174fb616431ce6869ed7fc8ff8c9be62fd0c550070ab4a0737a5ba9eb
 ```
 
 ### Other build modes
@@ -75,19 +81,12 @@ c8d7e97fbd3485cc31e7d82281a3291ba1720c9b86359a6891da90e841f3c443
 |---|---|
 | `./build-mac-arm.sh` | Portable non-PGO build; the safest starting point on another M-series generation |
 | `NATIVE=1 ./build-mac-arm.sh` | Host-specific compiler target; slower on the tested M5 |
-| `PGO_PROFILE_MODE=candidate ./build-mac-arm-pgo.sh` | Current fastest M5 candidate |
+| `./build-mac-arm-pgo.sh` | Current fastest M5 candidate; candidate mode is the default |
 | `PGO_PROFILE_MODE=train ./build-mac-arm-pgo.sh` | Train a fresh profile after source, compiler, or target changes |
-| `PGO_PROFILE_MODE=locked ./build-mac-arm-pgo.sh` | Reproduce and checksum the 23.11 MH/s reference on its exact locked source |
 
-The bare `./build-mac-arm-pgo.sh` command defaults to `locked` mode. That mode
-is intentionally strict and expects the pre-case-4 source represented by
-commit `9d5a195`; it should reject a different final binary. Use `candidate`
-mode on the current branch.
-
-Both locked-profile modes require Apple clang 21.0.0
+The checked-in candidate profile requires Apple clang 21.0.0
 (`clang-2100.1.1.101`). If the installed Xcode tools provide another compiler,
-train a fresh profile instead; a binary produced by another compiler should
-not be expected to match either checksum above.
+train a fresh profile instead.
 
 To train for a different Apple chip or changed hot loop:
 
@@ -113,8 +112,24 @@ FORCE_JUMP_TABLES=0 ./build-mac-arm.sh
 
 Do not redistribute a `NATIVE=1` binary as a general Apple-silicon build;
 compiler-selected instructions can be generation-specific. See
-[profiles/README.md](profiles/README.md) for the locked profile's exact
-toolchain, source provenance, and checksums.
+[profiles/README.md](profiles/README.md) for the profile's exact toolchain,
+source provenance, and reference checksums.
+
+## Repository scope
+
+The primary branch builds only the native Apple-silicon Verus CPU miner. It
+retains the CCminer pool/runtime core, the Verus PBaaS Stratum adapter, the
+optimized scanner, Haraka, CLHash, and the pinned `sse2neon` submodule. The
+pruning pass removed roughly 95 MiB of Windows prebuilt libraries and headers,
+NVAPI/pthreads bundles, vendored Jansson, Visual Studio resources, CUDA and
+generic Equihash solvers, legacy platform build scripts, web-API assets, and
+unused portable Verus implementations.
+
+Some legacy algorithm and device terminology remains inside the shared
+CCminer control plane. It is intentionally being removed incrementally because
+pool job parsing, work structures, and share submission are interwoven there;
+the first pass removed only code and assets proven absent from the Apple build
+and runtime graph.
 
 ## How the CPU path became fast
 

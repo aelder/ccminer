@@ -1,0 +1,6 @@
+#ifndef VERUS_STRATUM_H
+#define VERUS_STRATUM_H
+
+#define VERUS_NONCE_OFFSET 30
+
+#endif

@@ -1,4 +1,4 @@
-# Locked Apple-silicon PGO profile
+# Apple-silicon PGO reference profile
 
 `apple-m5-verus-20260722.proftext` is the exact LLVM frontend profile
 originally locked for the 23.11 MH/s reference binary and now reused by the
@@ -40,10 +40,10 @@ recorded in [`../BENCHMARKS.md`](../BENCHMARKS.md).
 - Reference `ccminer` SHA-256:
   `4be0d7e1b388184d3d02df8eb57a019869a503a3c37440f428f3ef65a7e6d6f7`
 
-The locked build rejects different optimization, native-target, jump-table, or
-extra compiler flags and verifies both the reconstructed profile and resulting
-binary checksums. Use `PGO_PROFILE_MODE=train ./build-mac-arm-pgo.sh` to create
-a fresh profile after changing mining code or the compiler.
+Candidate mode rejects different optimization, native-target, jump-table, or
+extra compiler flags and verifies the reconstructed profile checksum. Use
+`PGO_PROFILE_MODE=train ./build-mac-arm-pgo.sh` to create a fresh profile after
+changing mining code or the compiler.
 
 ## Current compatible candidate
 
@@ -63,6 +63,13 @@ Two subsequent short LuckPool sessions submitted four live PBaaS shares with
 zero rejects, validating the candidate's subscribe, authorize, job, target,
 solution, and share-submission path on that pool.
 
-Locked mode remains a reproducibility check for the older reference source and
-must match its binary checksum. Candidate mode verifies the same profile and
-toolchain but intentionally permits a different final binary checksum.
+After the Apple-only source/build pruning pass, the first verified PGO binary
+has SHA-256
+`56ee693174fb616431ce6869ed7fc8ff8c9be62fd0c550070ab4a0737a5ba9eb`.
+The kernel sources and candidate profile were unchanged; the binary identity
+changed because the linked control/protocol source layout and symbols changed.
+
+The older locked binary checksum remains provenance for the 23.11 MH/s
+reference. The primary branch no longer exposes a locked build mode because
+its source has intentionally moved on; candidate mode verifies the same profile
+and toolchain while permitting the final binary to differ.

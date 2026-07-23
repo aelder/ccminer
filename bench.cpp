@@ -10,7 +10,7 @@
 #include "algos.h"
 
 #ifdef __APPLE__
-#include "compat/pthreads/pthread_barrier.hpp"
+#include "pthread_barrier_apple.hpp"
 #endif
 
 int bench_algo = -1;

@@ -22,6 +22,7 @@
 #include <stdexcept>
 #include <vector>
 #include "verus_clhash.h"
+#include "stratum.h"
 #include "uint256.h"
 //#include "hash.h"
 #include <miner.h>
@@ -43,8 +44,7 @@ static const int PROTOCOL_VERSION = 170002;
 
 //#include <cuda_helper.h>
 
-#define EQNONCE_OFFSET 30 /* 27:34 */
-#define NONCE_OFT EQNONCE_OFFSET
+#define NONCE_OFT VERUS_NONCE_OFFSET
 
 static bool init[MAX_GPUS] = { 0 };
 static pthread_once_t haraka_constants_once = PTHREAD_ONCE_INIT;
@@ -275,9 +275,9 @@ extern "C" int scanhash_verus(int thr_id, struct work *work, uint32_t max_nonce,
         memset(full_data + 4 + 32 + 32 + 32 + 4, 0, 4);      // nBits
         memset(full_data + 4 + 32 + 32 + 32 + 4 + 4, 0, 32); // nNonce
         memset(sol_data + 3 + 8, 0, 64);                     // hashPrevMMRRoot, hashBlockMMRRoot
-		memcpy(nonceSpace, &pdata[EQNONCE_OFFSET - 3], 7 );			// transfer the nonce values that would be in the header to
-//		memcpy(nonceSpace + 4, &pdata[EQNONCE_OFFSET + 1], 3 );		// the 15 bytes available
-		memcpy(nonceSpace + 7, &pdata[EQNONCE_OFFSET + 2], 4 );	
+		memcpy(nonceSpace, &pdata[VERUS_NONCE_OFFSET - 3], 7 );			// transfer the nonce values that would be in the header to
+//		memcpy(nonceSpace + 4, &pdata[VERUS_NONCE_OFFSET + 1], 3 );		// the 15 bytes available
+		memcpy(nonceSpace + 7, &pdata[VERUS_NONCE_OFFSET + 2], 4 );
 	}
 
 	uint32_t  vhash[8] = { 0 };

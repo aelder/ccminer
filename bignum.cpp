@@ -6,12 +6,7 @@
 
 #include "uint256.h"
 
-#include <openssl/opensslv.h>
-#if OPENSSL_VERSION_NUMBER < 0x10100000L
-#include "compat/bignum_ssl10.hpp"
-#else
 #include "bignum.hpp"
-#endif
 
 #include "miner.h" // hex2bin
 /*
@@ -97,4 +92,3 @@ extern "C" void work_set_target_ratio(struct work* work, uint32_t* hash)
 {
 	bn_store_hash_target_ratio(hash, work->target, work, work->submit_nonce_id);
 }
-

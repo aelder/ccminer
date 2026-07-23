@@ -44,7 +44,7 @@
 #include "miner.h"
 #include "algos.h"
 
-#include "equi/equihash.h"
+#include "verus/stratum.h"
 
 //#include <cuda_runtime.h>
 
@@ -676,7 +676,6 @@ static void calc_network_diff(struct work *work)
 {
 	
 	if (opt_algo == ALGO_EQUIHASH) {
-            // net_diff = equi_network_diff(work);
             net_diff = verus_network_diff(work);
             return;
 	}
@@ -893,7 +892,7 @@ static bool submit_upstream_work(CURL *curl, struct work *work)
 		struct work submit_work;
 		memcpy(&submit_work, work, sizeof(struct work));
 		//if (!hashlog_already_submittted(submit_work.job_id, submit_work.nonces[idnonce])) {
-			if (equi_stratum_submit(pool, &submit_work))
+			if (verus_stratum_submit(pool, &submit_work))
 				hashlog_remember_submit(&submit_work, submit_work.nonces[idnonce]);
 			stratum.job.shares_count++;
 		//}
@@ -1713,7 +1712,7 @@ static bool stratum_gen_work(struct stratum_ctx *sctx, struct work *work)
 			break;
 		case ALGO_EQUIHASH:
 			memcpy(work->target, sctx->job.extra, 32);
-			equi_work_set_target(work, sctx->job.diff / opt_difficulty);
+			verus_work_set_target(work, sctx->job.diff / opt_difficulty);
 			break;
 		default:
 			work_set_target(work, sctx->job.diff / opt_difficulty);
@@ -1873,7 +1872,7 @@ static void *miner_thread(void *userdata)
 		uint32_t *nonceptr = (uint32_t*) (((char*)work.data) + wcmplen);
 
 		if (opt_algo == ALGO_EQUIHASH) {
-			nonceptr = &work.data[EQNONCE_OFFSET]; // 27 is pool extranonce (256bits nonce space)
+			nonceptr = &work.data[VERUS_NONCE_OFFSET]; // 27 is pool extranonce (256bits nonce space)
 			wcmplen = 4+32+32;
 		}
 
