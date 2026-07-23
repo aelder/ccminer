@@ -68,3 +68,8 @@ compat/curl-for-windows/
 *.cudafe1.c
 *.cudafe2.c
 
+benchmarks/*.json
+benchmarks/*.log
+configure~
+*.Po
+*.Tpo

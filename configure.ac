@@ -16,7 +16,6 @@ AM_PROG_CC_C_O
 AM_PROG_AS
 AC_PROG_RANLIB
 AC_PROG_CXX
-AC_OPENMP
 
 dnl Checks for header files
 AC_HEADER_STDC
@@ -30,7 +29,8 @@ AC_CHECK_HEADERS([sys/sysctl.h], [], [],
 #endif
 ])
 
-AC_CHECK_DECLS([be32dec, le32dec, be32enc, le32enc], [], [],
+AC_CHECK_DECLS([be16dec, le16dec, be16enc, le16enc,
+                be32dec, le32dec, be32enc, le32enc], [], [],
 [AC_INCLUDES_DEFAULT
 #ifdef HAVE_SYS_ENDIAN_H
 #include <sys/endian.h>
@@ -52,7 +52,7 @@ case $target in
     have_x86=true
     have_x86_64=true
     ;;
-  aarch64-*)
+  arm64-*|aarch64-*|arm-apple-darwin*)
     have_arm64=true
     ;;
   arm*)
@@ -144,7 +144,5 @@ fi
 
 
 
-
-AC_SUBST(OPENMP_CFLAGS) 
 
 AC_OUTPUT
