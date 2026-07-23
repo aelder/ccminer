@@ -15,6 +15,7 @@ accepted-share tests.
 | Packed dual-lane CLHash (`-O3`, ThinLTO, jump tables) | 10 | **22.95 MH/s** |
 | Clean frontend PGO (`-O3`, ThinLTO, jump tables) | 10 | **22.64 MH/s mean** |
 | Case-4 staged `prandex` load (locked PGO profile) | 10 | **24.16 MH/s mean** |
+| Case-4 candidate, minimized GUI (30-second run) | 10 | **24.10 MH/s** |
 
 The packed dual-lane result processed 183,910,193 hashes in 8.012 seconds. It is
 51.7% faster than the previously recorded 15.13 MH/s portable result. This is
@@ -54,10 +55,11 @@ seconds and produced a miner-only 231-function profile.
 Two 8-second PGO runs measured 23.11 and 22.17 MH/s, averaging **22.64 MH/s**.
 Two interleaved exact-default runs measured 21.43 and 21.80 MH/s, averaging
 **21.62 MH/s**. The short-run mean improvement was 4.8%. Kernel vectors passed,
-and no macOS thermal or performance warning was recorded. A 30–60 second
-confirmation and sustained thermal test have not been run; either requires
-explicit approval. The exact profile and reference build checksums are locked
-under [`profiles/`](profiles/README.md).
+and no macOS thermal or performance warning was recorded. At the time the
+profile was locked, no 30–60 second confirmation had been run. Later
+baseline/candidate confirmations are recorded below; a sustained thermal test
+still requires explicit approval. The exact profile and reference build
+checksums are locked under [`profiles/`](profiles/README.md).
 
 ## Provisional case-4 load-staging result
 
@@ -85,6 +87,18 @@ a **0.13%** advantage. No macOS thermal or performance warning was recorded.
 The candidate therefore remains neutral-to-slightly-positive over a longer
 window; the short-run 2.18% gain should not be treated as sustained.
 
+A follow-up candidate-only confirmation isolated a major source of system
+contention by minimizing the Codex/ChatGPT window on the external display
+before the run. The exact same 10-thread PGO candidate binary (SHA-256 above,
+commit `6c7ce96`), built with `-O3 -flto=thin`, the default AArch64 crypto
+target, forced jump-table lowering, and the locked profile, measured
+**24.10 MH/s** (722,953,387 hashes in 30.003 seconds). This is 6.1% above the
+earlier 22.72 MH/s candidate confirmation and closely matches its 24.155 MH/s
+short-run mean. No macOS thermal or performance warning was recorded. Because
+only the candidate was run under this minimized-window condition, treat the
+result as evidence of substantial GUI/display contention, not as a new
+baseline-versus-candidate comparison.
+
 ## Core-type diagnostics
 
 The normal scheduler does use all ten cores. A short four-thread run measured
@@ -102,6 +116,36 @@ miss sites were random CLHash key loads/stores and keyed Haraka loads. These
 are diagnostic ratios, not hashrate measurements; repeat the trace under an
 otherwise idle system before using small differences to make a release
 decision.
+
+## Metal feasibility prototype
+
+The isolated
+[`codex/metal-verus-prototype`](https://github.com/aelder/ccminer/tree/codex/metal-verus-prototype/prototypes/metal-verus)
+branch at commit `45d5b74` ports the exact Verus CLHash hot path, keyed-Haraka
+high-word filter, mutation log, and key restoration to Metal. It does not
+change this branch's production miner.
+
+The GPU implementation passed four hybrid canonical vectors, 257 deterministic
+CPU/GPU differential lanes, all eight CLHash cases, 14 colliding-index cases,
+and primitive checks for carry-less multiplication, rounded 16-bit
+multiplication, AES, and polynomial reduction.
+
+| Configuration | Duration | Result |
+|---|---:|---:|
+| Metal hot path, batch 8,192 | 8.003 s | 2.150 MH/s |
+| Locked PGO CPU, 10 threads | 8.011 s | 21.42 MH/s |
+| Metal while CPU ran | 10.004 s | 1.648 MH/s |
+| CPU while Metal ran | 8.002 s | 22.11 MH/s |
+| Provisional concurrent sum | — | 23.76 MH/s |
+
+The Metal rate is wall-clock serial command-submission throughput. The
+concurrent results are short and noisy, and the prototype does not yet scan
+targets, return winning nonces, or submit shares. A production attempt would
+need queued/double-buffered command buffers, synchronized CPU/GPU measurement,
+and CPU verification of every candidate before submission. Unified memory
+removes an explicit PCIe transfer but not the algorithm's random per-lane key
+mutation, software GPU carry-less multiplication/AES work, or contention for
+memory bandwidth and package power.
 
 ## Rejected short experiments
 

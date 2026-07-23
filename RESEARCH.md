@@ -10,7 +10,41 @@ The best route to a maximally fast, pool-capable Apple-silicon miner is **not** 
 2. Replace or reconcile its copied VerusHash implementation with the newer implementation in the current `VerusCoin/VerusCoin` daemon, which already has a supported Apple-ARM build path, a current `sse2neon`, and a better-structured hot loop.
 3. Establish correctness against the daemon before optimizing, then benchmark thread/QoS policy, allocation removal, compiler tuning, and multi-nonce instruction-level parallelism on each target M-series generation.
 
+The implementation ultimately kept CCminer's current protocol and scanner
+contract, repaired its Apple/native and benchmark paths, and specialized the
+CPU kernel in place. A wholesale daemon-loop replacement was not required to
+reach the current fast path; the daemon remains a correctness and design
+reference.
+
 The official mining page currently lists CCminer v3.8.3a for Windows, Linux, and ARM, but explicitly says the Apple-silicon macOS build is “not (yet) available.” It links Linux/ARM to `Oink70/ccminer-verus` and Windows to `monkins1010/ccminer`; it no longer lists `nheqminer`. The same page describes CPU and ARM mining as highly suitable and says no GPU mining software is available. [Official mining page](https://docs.verus.io/economy/start-mining.html#mining-software)
+
+## Implementation update: 2026-07-23
+
+This section records what happened after the original audit. The detailed
+measurements and rejected experiments live in
+[`BENCHMARKS.md`](BENCHMARKS.md); the reproducible operator guide is
+[`README-MAC-ARM.md`](README-MAC-ARM.md).
+
+| Original workstream | Result |
+|---|---|
+| Native build | Complete: Homebrew prefix discovery, explicit `aarch64-apple-darwin`, current SDK headers, ARM crypto target, ThinLTO |
+| Honest multi-thread benchmark | Complete: nonce-span bug fixed, common start barrier/deadline, bounded batches, exact aggregate hash count |
+| Consensus kernel tests | Complete for the offline hot path: deterministic vectors, scalar/dual differential, key mutation/restoration, alias cases, ARM `PMULHRSW` semantics |
+| Multi-nonce ILP | Complete for two lanes: the main gain, raising the short 10-thread result from 15.13 to 22.95 MH/s with the compiler changes |
+| Compiler tuning | Measured: forced jump tables won; ThinLTO remains; `-mcpu=native` lost; locked-profile PGO gained 4.8% in its paired comparison |
+| Cache/load scheduling | One case-4 load-staging candidate survived and reached 24.155 MH/s in short pairs and 24.10 MH/s over a quiet-desktop 30-second run |
+| P/E-core policy | Measured: all 10 cores contribute; a 4-normal/6-utility split did not beat the default scheduler |
+| GPU feasibility | Exact Metal hot-path prototype passed CPU/GPU differential checks, measured 2.150 MH/s alone and 1.648 MH/s beside the CPU miner, and remains isolated on `codex/metal-verus-prototype` |
+| Pool validation | Open: accepted-share testing is still required before binary distribution |
+| Sustained efficiency | Open: no 10–20 minute thermal/power run has been authorized or performed |
+| Packaging/licensing | Open: signing, notarization, dependency pinning, and a complete license/NOTICE inventory remain |
+
+The current 24.10 MH/s result is 59.3% above the first correct 15.13 MH/s
+native baseline. It used 10 threads and the case-4 candidate binary with the
+Codex/ChatGPT window minimized. A separate diagnosis found that Codex's
+Chromium GPU process and WindowServer were continuously compositing on a
+6016×3384 backing surface at 120 Hz; GUI/display state is therefore now a
+recorded benchmark variable.
 
 ## What must be implemented
 
@@ -136,15 +170,29 @@ Produce a native `arm64` CLI first. After correctness and performance stabilize,
 
 For a distributable miner, also add deterministic dependency pinning, code signing, hardened runtime where compatible, notarization, SHA-256 checksums, and a source archive/offer satisfying the combined GPL obligations.
 
-## Suggested implementation sequence
+## Remaining implementation sequence
 
-1. Make unmodified `Verus2.2` compile as native ARM64 with the five build fixes above.
-2. Add a standalone `--benchmark` correctness corpus and daemon cross-check before connecting to any pool.
-3. Confirm Stratum subscribe/authorize/job/submit compatibility against a test or low-difficulty pool and verify accepted shares.
-4. Replace the copied hash loop with the current daemon implementation while keeping CCminer protocol code.
-5. Benchmark allocation removal and seed/key reuse.
-6. Benchmark `sse2neon` versions/direct NEON, compiler/LTO/PGO variants, worker count, and QoS.
-7. Only then test nonce batching/unrolling.
-8. Package, sign, notarize, publish checksums and complete license notices.
+The native build, deterministic hot-path tests, reliable offline benchmark,
+two-lane CPU kernel, compiler/LTO/PGO comparisons, and first P/E-core
+experiments are complete. The remaining gates are:
 
-The immediate engineering milestone should be: **a native ARM64 CCminer that produces byte-for-byte daemon-equivalent hashes for PBaaS jobs and receives accepted pool shares**. That proves the difficult compatibility boundary; subsequent work is measurable optimization.
+1. Validate Stratum subscribe/authorize/job/submit behavior against a
+   controlled or low-difficulty pool and record accepted shares.
+2. Cross-check complete PBaaS job assembly and submitted nonces against the
+   daemon, not only the isolated hashing kernel.
+3. Continue CPU optimization with the existing 8–10 second iteration loop,
+   correctness oracle, order-reversed pairs, and 30–60 second confirmations.
+4. Train and compare fresh PGO profiles on each target M-series generation
+   rather than assuming the checked-in M5 profile transfers.
+5. Revisit Metal only if queued/double-buffered dispatch can beat its current
+   1.648 MH/s concurrent result after CPU, memory-bandwidth, and package-power
+   contention.
+6. With explicit approval, run 10–20 minute thread-count, power, temperature,
+   and H/s/W comparisons.
+7. Restore a complete license/NOTICE inventory, pin dependencies, sign and
+   notarize binaries, and publish per-build checksums and source.
+
+The immediate engineering milestone is now: **receive accepted shares with the
+current native ARM64 candidate while preserving byte-for-byte daemon-equivalent
+PBaaS hashing behavior**. That closes the remaining correctness boundary before
+binary distribution or sustained performance claims.

@@ -1,5 +1,17 @@
 # ccminer
 
+## Apple silicon
+
+This fork now has a native `arm64` VerusHash 2.2.2 path for Apple silicon.
+On an Apple M5 MacBook Air, the current CPU candidate measured **24.10 MH/s**
+over 30 seconds with 10 threads, up 59.3% from the initial 15.13 MH/s native
+baseline. This is an offline benchmark result, not a sustained thermal or
+accepted-share result.
+
+See [README-MAC-ARM.md](README-MAC-ARM.md) for the reproducible build,
+correctness tests, benchmark conditions, optimization history, P/E-core
+findings, Metal prototype results, and current limitations.
+
 Based on Christian Buchner's &amp; Christian H.'s CUDA project, no more active on github since 2014.
 
 Check the [README.txt](README.txt) for the additions
@@ -42,6 +54,18 @@ Compile on FreeBSD
 Make sure you have `gmake` installed from the ports tree. Use `build-freebsd.sh`
 
 
-Compile on MAC
-brew install autoconf automake libtool openssl
-./build.sh
+Compile on Apple silicon macOS
+--------------------------------
+
+Do not use the legacy `build.sh` for a native Apple-silicon build. Follow
+[README-MAC-ARM.md](README-MAC-ARM.md); the short version is:
+
+```sh
+xcode-select --install
+brew install autoconf automake curl jansson openssl@3
+PGO_PROFILE_MODE=candidate ./build-mac-arm-pgo.sh
+```
+
+The current fastest source uses the checked-in Apple M5 profile in candidate
+mode. Use `./build-mac-arm.sh` instead for a portable, non-PGO Apple-silicon
+binary.
