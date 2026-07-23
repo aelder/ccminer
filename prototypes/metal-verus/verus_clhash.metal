@@ -26,32 +26,66 @@ inline uint4 from64(ulong low, ulong high)
     return uint4(uint(low), uint(low >> 32), uint(high), uint(high >> 32));
 }
 
-inline uint4 clmul64(ulong a, ulong b)
+struct Clmul32x4
 {
-    ulong multiples[16];
-    multiples[0] = 0;
-    multiples[1] = b;
-    for (uint i = 2; i < 16; i += 2) {
-        multiples[i] = multiples[i >> 1] << 1;
-        multiples[i + 1] = multiples[i] ^ b;
-    }
+    uint4 low;
+    uint4 high;
+};
 
-    ulong low = multiples[a & 15];
-    ulong high = 0;
-    for (uint shift = 4; shift < 64; shift += 4) {
-        const ulong part = multiples[(a >> shift) & 15];
+inline Clmul32x4 clmul32x4(uint4 a, uint4 b)
+{
+    const uint4 doubled = b << 1;
+    const uint4 quadrupled = b << 2;
+    const uint4 octupled = b << 3;
+    uint4 digit = a & 15;
+    uint4 low =
+        (b & (uint4(0) - (digit & 1))) ^
+        (doubled & (uint4(0) - ((digit >> 1) & 1))) ^
+        (quadrupled & (uint4(0) - ((digit >> 2) & 1))) ^
+        (octupled & (uint4(0) - (digit >> 3)));
+    uint4 high = 0;
+
+    for (uint shift = 4; shift < 32; shift += 4) {
+        digit = (a >> shift) & 15;
+        const uint4 part =
+            (b & (uint4(0) - (digit & 1))) ^
+            (doubled & (uint4(0) - ((digit >> 1) & 1))) ^
+            (quadrupled & (uint4(0) - ((digit >> 2) & 1))) ^
+            (octupled & (uint4(0) - (digit >> 3)));
         low ^= part << shift;
-        high ^= part >> (64 - shift);
+        high ^= part >> (32 - shift);
     }
 
-    ulong repair_mask = 0xeeeeeeeeeeeeeeeeUL;
+    uint repair_mask = 0xeeeeeeeeu;
     for (uint i = 1; i < 4; ++i) {
-        const ulong crossed = (a & repair_mask) >> i;
+        const uint4 crossed = (a & repair_mask) >> i;
         repair_mask &= repair_mask << 1;
-        const ulong include = ulong(0) - ((b >> (64 - i)) & 1);
+        const uint4 include = uint4(0) - ((b >> (32 - i)) & 1);
         high ^= crossed & include;
     }
-    return from64(low, high);
+    return {low, high};
+}
+
+inline uint4 clmul64(ulong a, ulong b)
+{
+    const uint a_low = uint(a);
+    const uint a_high = uint(a >> 32);
+    const uint b_low = uint(b);
+    const uint b_high = uint(b >> 32);
+
+    const Clmul32x4 products = clmul32x4(
+        uint4(a_low, a_high, a_low ^ a_high, 0),
+        uint4(b_low, b_high, b_low ^ b_high, 0));
+    const ulong low_product =
+        ulong(products.low.x) | (ulong(products.high.x) << 32);
+    const ulong high_product =
+        ulong(products.low.y) | (ulong(products.high.y) << 32);
+    const ulong middle_product =
+        (ulong(products.low.z) | (ulong(products.high.z) << 32)) ^
+        low_product ^ high_product;
+    return from64(
+        low_product ^ (middle_product << 32),
+        high_product ^ (middle_product >> 32));
 }
 
 inline uint4 clmul_cross(uint4 value)
@@ -292,6 +326,24 @@ kernel void primitive_probe(
     uint4 aes_state = left[gid];
     aesenc(aes_state, right[gid], tables);
     aes_results[gid] = aes_state;
+}
+
+kernel void clmul_benchmark(
+    device uint4 *states [[buffer(0)]],
+    constant uint &count [[buffer(1)]],
+    constant uint &iterations [[buffer(2)]],
+    uint gid [[thread_position_in_grid]])
+{
+    if (gid >= count)
+        return;
+
+    uint4 state = states[gid];
+    for (uint i = 0; i < iterations; ++i) {
+        const uint4 product = clmul_cross(state);
+        state = product ^ state.yzwx ^
+            uint4(0x9e3779b9u, 0x7f4a7c15u, 0xf39cc060u, i + gid);
+    }
+    states[gid] = state;
 }
 
 kernel void verus_clhash_batch(

@@ -200,6 +200,7 @@ public:
         prepare_ = make_pipeline(library, @"prepare_keys");
         restore_ = make_pipeline(library, @"restore_keys");
         primitive_ = make_pipeline(library, @"primitive_probe");
+        clmul_benchmark_ = make_pipeline(library, @"clmul_benchmark");
         clhash_ = make_pipeline(library, @"verus_clhash_batch");
         queue_ = [device_ newCommandQueue];
         if (!queue_)
@@ -355,6 +356,57 @@ public:
             aes_results.size() * sizeof(UInt4));
     }
 
+    void benchmark_clmul(double duration, uint32_t count)
+    {
+        constexpr uint32_t iterations = 64;
+        std::vector<UInt4> states(count);
+        uint32_t seed = 0x243f6a88u;
+        for (UInt4 &state : states) {
+            state = {
+                xorshift32(seed), xorshift32(seed),
+                xorshift32(seed), xorshift32(seed)
+            };
+        }
+        id<MTLBuffer> state_buffer =
+            make_buffer(states.data(), states.size() * sizeof(UInt4));
+
+        uint64_t operations = 0;
+        const auto started = std::chrono::steady_clock::now();
+        double elapsed = 0;
+        do {
+            id<MTLCommandBuffer> command = [queue_ commandBuffer];
+            id<MTLComputeCommandEncoder> encoder =
+                [command computeCommandEncoder];
+            [encoder setComputePipelineState:clmul_benchmark_];
+            [encoder setBuffer:state_buffer offset:0 atIndex:0];
+            [encoder setBytes:&count length:sizeof(count) atIndex:1];
+            [encoder setBytes:&iterations
+                       length:sizeof(iterations) atIndex:2];
+            const NSUInteger width = std::min<NSUInteger>(
+                64, clmul_benchmark_.maxTotalThreadsPerThreadgroup);
+            [encoder dispatchThreads:MTLSizeMake(count, 1, 1)
+                 threadsPerThreadgroup:MTLSizeMake(width, 1, 1)];
+            [encoder endEncoding];
+            finish(command);
+            operations += uint64_t(count) * iterations;
+            elapsed = std::chrono::duration<double>(
+                std::chrono::steady_clock::now() - started).count();
+        } while (elapsed < duration);
+
+        const UInt4 *result =
+            static_cast<const UInt4 *>(state_buffer.contents);
+        const uint32_t checksum =
+            result[0].x ^ result[count - 1].w;
+        if (checksum == 0)
+            fail("unexpected zero carry-less multiply checksum");
+        std::printf(
+            "GPU carry-less multiply: %.3f Gop/s "
+            "(%llu operations, %.3fs, batch %u, chain %u)\n",
+            (double(operations) / elapsed) / 1000000000.0,
+            static_cast<unsigned long long>(operations),
+            elapsed, count, iterations);
+    }
+
 private:
     void encode_prepare(
         id<MTLCommandBuffer> command,
@@ -436,13 +488,14 @@ private:
     id<MTLComputePipelineState> prepare_;
     id<MTLComputePipelineState> restore_;
     id<MTLComputePipelineState> primitive_;
+    id<MTLComputePipelineState> clmul_benchmark_;
     id<MTLComputePipelineState> clhash_;
     id<MTLBuffer> tables_;
 };
 
 void check_primitives(MetalHarness &metal)
 {
-    constexpr uint32_t count = 257;
+    constexpr uint32_t count = 4096;
     std::vector<UInt4> left(count);
     std::vector<UInt4> right(count);
     uint32_t state = 0x9e3779b9u;
@@ -456,6 +509,12 @@ void check_primitives(MetalHarness &metal)
     }
     left[0] = {0x00008000u, 0x80000000u, 0x00008000u, 0x80000000u};
     right[0] = left[0];
+    left[1] = {0, 0, 0, 0};
+    left[2] = {0xffffffffu, 0xffffffffu, 0xffffffffu, 0xffffffffu};
+    left[3] = {1, 0, 1, 0};
+    left[4] = {0, 0x80000000u, 0, 0x80000000u};
+    left[5] = {0xaaaaaaaau, 0xaaaaaaaau, 0x55555555u, 0x55555555u};
+    left[6] = {0xffffffffu, 0xffffffffu, 0, 0x80000000u};
 
     std::vector<UInt4> clmul_actual(count);
     std::vector<UInt4> mulhrs_actual(count);
@@ -818,6 +877,9 @@ int main(int argc, char **argv)
             check_canonical_vectors(metal);
             check_differential_batch(metal);
         }
+        metal.benchmark_clmul(
+            std::min(2.0, duration),
+            static_cast<uint32_t>(parsed_batch));
         smoke_benchmark(
             metal, duration, static_cast<uint32_t>(parsed_batch));
     }
